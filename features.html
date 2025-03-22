@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div id="home">
+        <h1>Welcome to the Music Quiz</h1>
+        <button onclick="startQuiz()">Start Quiz</button>
+        <button onclick="showLeaderboard()">Leaderboard</button>
+        <button onclick="showMultiplayer()">Multiplayer</button>
+    </div>
+    
+    <div id="quiz" class="hidden">
+        <h2 id="question">Listen to the clip and choose the correct answer:</h2>
+        <audio id="audio" controls></audio>
+        <div id="options"></div>
+        <p id="timer">Time Left: <span id="time">10</span>s</p>
+    </div>
+    
+    <div id="leaderboard" class="hidden">
+        <h2>Leaderboard</h2>
+        <ul id="leaderboard-list"></ul>
+    </div>
+    
+    <div id="multiplayer" class="hidden">
+        <h2>Multiplayer Mode</h2>
+        <button onclick="createRoom()">Create Room</button>
+        <button onclick="joinRoom()">Join Room</button>
+    </div>
+    
+    <div id="results" class="hidden">
+        <h2>Your Score: <span id="score">0</span></h2>
+        <button onclick="restartQuiz()">Play Again</button>
+        <button onclick="shareResults()">Share on Social Media</button>
+    </div>
+
+    <script>
+        let timeLeft = 10;
+        let timer;
+        let score = 0;
+
+        function startQuiz() {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('quiz').classList.remove('hidden');
+            loadQuestion();
+            startTimer();
+        }
+
+        function loadQuestion() {
+            document.getElementById('audio').src = 'sample.mp3'; // Replace with actual audio file
+            document.getElementById('options').innerHTML = `
+                <button onclick="checkAnswer(true)">Correct Answer</button>
+                <button onclick="checkAnswer(false)">Wrong Answer 1</button>
+                <button onclick="checkAnswer(false)">Wrong Answer 2</button>
+                <button onclick="checkAnswer(false)">Wrong Answer 3</button>
+            `;
+        }
+
+        function checkAnswer(correct) {
+            if (correct) {
+                score++;
+            }
+            document.getElementById('score').innerText = score;
+            showResults();
+        }
+
+        function startTimer() {
+            timeLeft = 10;
+            document.getElementById('time').innerText = timeLeft;
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    showResults();
+                }
+            }, 1000);
+        }
+
+        function showResults() {
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+        }
+
+        function restartQuiz() {
+            score = 0;
+            document.getElementById('score').innerText = score;
+            document.getElementById('results').classList.add('hidden');
+            startQuiz();
+        }
+
+        function showLeaderboard() {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('leaderboard').classList.remove('hidden');
+        }
+
+        function showMultiplayer() {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('multiplayer').classList.remove('hidden');
+        }
+
+        function shareResults() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(`I scored ${score} on the Music Quiz! Can you beat me?`);
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+        }
+    </script>
+</body>
+</html>
