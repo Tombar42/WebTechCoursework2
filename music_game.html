@@ -4,22 +4,102 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music Quiz</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontisto/3.0.4/css/fontisto/fontisto.min.css">
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #8B0000, #B22222);
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      position: relative;
+      text-align: center;
+      padding: 20px;
+    }
+    .btn {
+      padding: 20px 60px;
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 2px solid white;
+      border-radius: 50px;
+      cursor: pointer;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s ease;
+      margin: 50px auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn i {
+      font-size: 2rem;
+    }
+    .btn:hover {
+      transform: scale(1.1);
+    }
+    .background-elements {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .circle {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      filter: blur(20px);
+    }
+    .circle:nth-child(1) { top: 10%; left: 20%; }
+    .circle:nth-child(2) { bottom: 15%; right: 25%; }
+    .circle:nth-child(3) { top: 50%; left: 60%; }
+    .content {
+      max-width: 800px;
+      margin-top: 50px;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+    .leaderboard {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+    }
+  </style>
 </head>
 <body>
-  <div id="quiz-container">
-    <h1 style="text-align:center;">🎵 Music Quiz 🎵</h1>
-    <div id="question-container">
-      <audio id="audio" controls></audio>
-      <h2 id="question"></h2>
-      <div id="choices"></div>
-    </div>
-    <button id="next-btn">Next</button>
-    <div id="result-container" class="hidden">
-      <h2 id="final-score"></h2>
-      <button id="restart-btn">Restart Quiz</button>
-    </div>
+<div class="background-elements">
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+</div>
+<div class="content">
+  <h1>Music Quiz</h1>
+  <p>Test your music knowledge and climb the leaderboard!</p>
+  <p>Rules: Answer as many questions as you can correctly. The faster, the better!</p>
+  <button class="btn"><i class="fi fi-music-note"></i>Play</button>
+  <div class="leaderboard">
+    <h2>Leaderboard</h2>
+    <p>Coming soon...</p>
   </div>
-  <script src="script.js"></script>
+</div>
 </body>
 </html>
