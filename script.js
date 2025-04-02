@@ -28,6 +28,7 @@ let playerName = '';
 const questionElement = document.getElementById('question');
 const answersElement = document.getElementById('answers');
 const nextButton = document.getElementById('next-btn');
+const currentScoreElement = document.getElementById('current-score');
 
 // Prompt for player name at the start of the quiz
 function startQuiz() {
@@ -59,6 +60,10 @@ function selectAnswer(selectedOption) {
   } else {
     alert("Wrong answer!");
   }
+  
+  // Update the score display
+  currentScoreElement.innerText = score;
+
   nextButton.style.display = 'block';
 }
 
@@ -95,7 +100,7 @@ function displayScores() {
   
   scores.forEach((entry, index) => {
     const li = document.createElement('li');
-    li.innerText = `${entry.name}: ${entry.score}`;
+        li.innerText = `${entry.name}: ${entry.score}`;
     scoreList.appendChild(li);
   });
 }
