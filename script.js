@@ -29,6 +29,8 @@ const questionElement = document.getElementById('question');
 const answersElement = document.getElementById('answers');
 const nextButton = document.getElementById('next-btn');
 const currentScoreElement = document.getElementById('current-score');
+const leaderboardDisplay = document.getElementById('leaderboard-display');
+const backButton = document.getElementById('back-btn');
 
 // Prompt for player name at the start of the quiz
 function startQuiz() {
@@ -84,26 +86,60 @@ function showResults() {
   
   // Save score to local storage
   saveScore(playerName, score);
+  
+  // Show the leaderboard
+  leaderboardDisplay.style.display = 'block';
   displayScores();
 }
 
+// Save score to local storage
 function saveScore(name, score) {
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
   scores.push({ name: name, score: score });
   localStorage.setItem('scores', JSON.stringify(scores));
 }
 
+// Display scores in the leaderboard
 function displayScores() {
   const scoreList = document.getElementById('score-list');
   scoreList.innerHTML = ''; // Clear existing scores
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
   
-  scores.forEach((entry, index) => {
+  console.log("Scores retrieved from local storage:", scores); // Debugging line
+  
+  scores.forEach((entry) => {
     const li = document.createElement('li');
-        li.innerText = `${entry.name}: ${entry.score}`;
+    li.innerText = `${entry.name}: ${entry.score}`;
     scoreList.appendChild(li);
   });
 }
 
-// Start the quiz when the page loads
-startQuiz();
+// Event listener for the back button
+backButton.addEventListener('click', () => {
+  window.location.href = 'index.html'; // Redirect to the main page
+});
+
+// Function to display scores on the main page
+function displayScoresOnMainPage() {
+  const scoreList = document.getElementById('score-list');
+  scoreList.innerHTML = ''; // Clear existing scores
+  const scores = JSON.parse(localStorage.getItem('scores')) || [];
+  
+  console.log("Scores retrieved for main page:", scores); // Debugging line
+  
+  scores.forEach((entry) => {
+    const li = document.createElement('li');
+    li.innerText = `${entry.name}: ${entry.score}`;
+    scoreList.appendChild(li);
+  });
+}
+
+// Call the function to display scores when the main page loads
+if (document.getElementById('score-list')) {
+  displayScoresOnMainPage();
+}
+
+// Start the quiz when the quiz page loads
+if (document.getElementById('question')) {
+  startQuiz();
+}
