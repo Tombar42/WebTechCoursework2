@@ -23,12 +23,15 @@ const questions = [
 
 let currentQuestionIndex = 0;
 let score = 0;
+let playerName = '';
 
 const questionElement = document.getElementById('question');
 const answersElement = document.getElementById('answers');
 const nextButton = document.getElementById('next-btn');
 
+// Prompt for player name at the start of the quiz
 function startQuiz() {
+  playerName = prompt("Enter your name:") || "Player";
   currentQuestionIndex = 0;
   score = 0;
   nextButton.style.display = 'none';
@@ -70,9 +73,31 @@ nextButton.addEventListener('click', () => {
 });
 
 function showResults() {
-  questionElement.innerText = `Quiz Finished! Your score is ${score} out of ${questions.length}.`;
+  questionElement.innerText = `${playerName}, your score is ${score} out of ${questions.length}.`;
   answersElement.innerHTML = '';
   nextButton.style.display = 'none';
+  
+  // Save score to local storage
+  saveScore(playerName, score);
+  displayScores();
+}
+
+function saveScore(name, score) {
+  const scores = JSON.parse(localStorage.getItem('scores')) || [];
+  scores.push({ name: name, score: score });
+  localStorage.setItem('scores', JSON.stringify(scores));
+}
+
+function displayScores() {
+  const scoreList = document.getElementById('score-list');
+  scoreList.innerHTML = ''; // Clear existing scores
+  const scores = JSON.parse(localStorage.getItem('scores')) || [];
+  
+  scores.forEach((entry, index) => {
+    const li = document.createElement('li');
+    li.innerText = `${entry.name}: ${entry.score}`;
+    scoreList.appendChild(li);
+  });
 }
 
 // Start the quiz when the page loads
