@@ -1,111 +1,119 @@
-const questions = [];
+const clientId = '315f4b7ea08247d98712188666b73534'; // Replace with your Spotify Client ID
+const clientSecret = '77b0af707778471e8d7cf066d6a56276'; // Replace with your Spotify Client Secret
+
 let currentQuestionIndex = 0;
 let score = 0;
-let playerName = '';
-const audioElement = new Audio();
+let tracks = [];
+let currentTrack = {};
 
-const questionElement = document.getElementById('question');
-const answersElement = document.getElementById('answers');
-const nextButton = document.getElementById('next-btn');
+document.getElementById('startButton').addEventListener('click', startQuiz);
+document.getElementById('nextButton').addEventListener('click', nextQuestion);
+document.getElementById('restartButton').addEventListener('click', restartQuiz);
 
-// Prompt for player name at the start of the quiz
-function startQuiz() {
-  playerName = prompt("Enter your name:") || "Player";
-  currentQuestionIndex = 0;
-  score = 0;
-  nextButton.style.display = 'none';
-  fetchQuestions(); // Fetch music-related questions from iTunes
+// Start the quiz
+async function startQuiz() {
+  document.getElementById('startButton').style.display = 'none';
+  document.getElementById('quizContainer').style.display = 'block';
+  await loadTracks();
+  showQuestion();
 }
 
-// Fetch music questions from iTunes API
-function fetchQuestions() {
-  fetch('https://itunes.apple.com/search?term=pop&media=music&limit=5') // Searching for pop music, you can change it
-    .then(response => response.json())
-    .then(data => {
-      const tracks = data.results;
-      tracks.forEach(track => {
-        questions.push({
-          question: `Who sings this song: "${track.trackName}"?`,
-          audio: track.previewUrl,
-          correctAnswer: track.artistName,
-          options: [track.artistName, "Justin Bieber", "Drake", "Katy Perry"] // Replace with dynamic options later
-        });
-      });
-      showQuestion(questions[currentQuestionIndex]);
-    });
-}
-
-// Show the current question and audio preview
-function showQuestion(question) {
-  questionElement.innerText = question.question;
-  answersElement.innerHTML = '';
-  
-  // Play the audio preview
-  audioElement.src = question.audio;
-  audioElement.play();
-  
-  question.options.forEach(option => {
-    const button = document.createElement('button');
-    button.innerText = option;
-    button.classList.add('btn');
-    button.addEventListener('click', () => selectAnswer(option));
-    answersElement.appendChild(button);
+// Get Access Token from Spotify
+async function getAccessToken() {
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'grant_type=client_credentials',
   });
+
+  const data = await response.json();
+  return data.access_token;
 }
 
-// Handle answer selection
-function selectAnswer(selectedOption) {
-  const currentQuestion = questions[currentQuestionIndex];
-  if (selectedOption === currentQuestion.correctAnswer) {
-    score++;
-    alert("Correct!");
-  } else {
-    alert("Wrong answer!");
-  }
-  nextButton.style.display = 'block';
+// Load a list of tracks from Spotify
+async function loadTracks() {
+  const accessToken = await getAccessToken();
+  const searchTerm = 'pop'; // Or change to a dynamic search term based on quiz
+  const url = `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=10`;
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+    }
+  });
+
+  const data = await response.json();
+  tracks = data.tracks.items;
 }
 
-// Go to the next question
-nextButton.addEventListener('click', () => {
-  currentQuestionIndex++;
-  if (currentQuestionIndex < questions.length) {
-    showQuestion(questions[currentQuestionIndex]);
-    nextButton.style.display = 'none';
+// Show the current question
+function showQuestion() {
+  if (currentQuestionIndex < tracks.length) {
+    currentTrack = tracks[currentQuestionIndex];
+    const questionElement = document.getElementById('question');
+    const answersElement = document.getElementById('answers');
+    const nextButton = document.getElementById('nextButton');
+
+    questionElement.innerText = `Who is the artist of the track: "${currentTrack.name}"?`;
+
+    // Show possible answers (including correct and some random options)
+    const correctAnswer = currentTrack.artists[0].name;
+    const randomArtists = tracks
+      .filter(track => track.artists[0].name !== correctAnswer)
+      .slice(0, 3)
+      .map(track => track.artists[0].name);
+
+    const allAnswers = [correctAnswer, ...randomArtists];
+    allAnswers.sort(() => Math.random() - 0.5); // Shuffle answers
+
+    answersElement.innerHTML = '';
+    allAnswers.forEach(answer => {
+      const button = document.createElement('button');
+      button.innerText = answer;
+      button.classList.add('btn');
+      button.addEventListener('click', () => selectAnswer(answer));
+      answersElement.appendChild(button);
+    });
+
+    nextButton.style.display = 'none'; // Hide next button until an answer is selected
   } else {
     showResults();
   }
-});
+}
 
-// Show results at the end of the quiz
+// Handle the answer selection
+function selectAnswer(selectedAnswer) {
+  const correctAnswer = currentTrack.artists[0].name;
+  if (selectedAnswer === correctAnswer) {
+    score++;
+  }
+
+  const nextButton = document.getElementById('nextButton');
+  nextButton.style.display = 'block';
+}
+
+// Move to the next question
+function nextQuestion() {
+  currentQuestionIndex++;
+  showQuestion();
+}
+
+// Show the results of the quiz
 function showResults() {
-  questionElement.innerText = `${playerName}, your score is ${score} out of ${questions.length}.`;
-  answersElement.innerHTML = '';
-  nextButton.style.display = 'none';
-
-  // Save score to local storage
-  saveScore(playerName, score);
-  displayScores();
+  document.getElementById('quizContainer').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('score').innerText = `${score} out of ${tracks.length}`;
 }
 
-// Save the player's score to localStorage
-function saveScore(name, score) {
-  const scores = JSON.parse(localStorage.getItem('scores')) || [];
-  scores.push({ name: name, score: score });
-  localStorage.setItem('scores', JSON.stringify(scores));
+// Restart the quiz
+function restartQuiz() {
+  currentQuestionIndex = 0;
+  score = 0;
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('startButton').style.display = 'block';
+  document.getElementById('musicResults').innerHTML = '';
 }
-
-// Display scores from local storage
-function displayScores() {
-  const scoreList = document.getElementById('score-list');
-  scoreList.innerHTML = ''; // Clear existing scores
-  const scores = JSON.parse(localStorage.getItem('scores')) || [];
-  
-  scores.forEach((entry, index) => {
-    const li = document.createElement('li');
-    li.innerText = `${entry.name}: ${entry.score}`;
-    scoreList.appendChild(li);
-  });
-}
-
-// Start the quiz when the page loads
-startQuiz();
