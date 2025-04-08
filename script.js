@@ -47,38 +47,38 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     async function loadTracks() {
-        const accessToken = await getAccessToken();
-        if (!accessToken) {
-            displayError("Failed to authenticate with Spotify.");
-            return;
-        }
-
-        const searchTerm = 'pop';
-        const url = `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=10`;
-
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`Spotify API Error: ${response.status} ${response.statusText}`);
-            }
-
-            const data = await response.json();
-            tracks = data.tracks?.items || [];
-
-            if (tracks.length === 0) {
-                displayError("No tracks found. Try a different search term.");
-            }
-        } catch (error) {
-            console.error("Error fetching tracks:", error);
-            displayError("Failed to load tracks.");
-        }
+    const accessToken = await getAccessToken();
+    if (!accessToken) {
+        displayError("Failed to authenticate with Spotify.");
+        return;
     }
+
+    const searchTerm = 'pop';
+    const url = `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=10`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            }
+        });
+
+        const data = await response.json();
+        tracks = data.tracks?.items || [];
+
+        // ✅ Filter out tracks that have no preview URL
+        tracks = tracks.filter(track => track.preview_url);
+
+        if (tracks.length === 0) {
+            displayError("No playable tracks found. Try a different search.");
+        }
+    } catch (error) {
+        console.error("Error fetching tracks:", error);
+        displayError("Failed to load tracks.");
+    }
+}
+
 
     async function startQuiz() {
         if (startButton) startButton.style.display = 'none';
