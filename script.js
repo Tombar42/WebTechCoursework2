@@ -8,6 +8,7 @@ const questionElement = document.getElementById('question');
 const answersElement = document.getElementById('answers');
 const nextButton = document.getElementById('next-btn');
 
+// Start the quiz
 function startQuiz() {
   playerName = prompt("Enter your name:") || "Player";
   currentQuestionIndex = 0;
@@ -19,73 +20,26 @@ function startQuiz() {
 function showQuestion(question) {
   questionElement.innerText = '';
   answersElement.innerHTML = '';
-  nextButton.style.display = 'none';
 
   if (question.type === 'text') {
     questionElement.innerText = question.question;
     question.options.forEach(option => {
-      const btn = document.createElement('button');
-      btn.innerText = option;
-      btn.classList.add('btn');
-      btn.addEventListener('click', () => selectAnswer(option));
-      answersElement.appendChild(btn);
+      const button = document.createElement('button');
+      button.innerText = option;
+      button.classList.add('btn');
+      button.addEventListener('click', () => selectAnswer(option, question.answer));
+      answersElement.appendChild(button);
     });
   } else if (question.type === 'audio') {
-    questionElement.innerText = 'Which song is this?';
-    loadAudioQuestion(question);
+    loadAudioQuestion(question.query);
   }
+
+  nextButton.style.display = 'none';
 }
 
-function loadAudioQuestion(question) {
-  const callbackName = "deezerCallback_" + Math.random().toString(36).substring(7);
-  const script = document.createElement('script');
-  script.src = `https://api.deezer.com/search?q=${encodeURIComponent(question.query)}&output=jsonp&limit=4&callback=${callbackName}`;
-
-  window[callbackName] = function(data) {
-    if (!data.data || data.data.length < 4) {
-      questionElement.innerText = 'Could not load audio question.';
-      return;
-    }
-
-    const tracks = shuffleArray(data.data).slice(0, 4);
-    const correctTrack = tracks[0];
-
-    question.answer = correctTrack.title;
-    question.options = tracks.map(t => t.title);
-
-    const audio = new Audio(correctTrack.preview);
-    audio.play();
-    setTimeout(() => {
-      audio.pause();
-      audio.currentTime = 0;
-    }, 5000);
-
-    question.options.forEach(option => {
-      const btn = document.createElement('button');
-      btn.innerText = option;
-      btn.classList.add('btn');
-      btn.addEventListener('click', () => selectAnswer(option));
-      answersElement.appendChild(btn);
-    });
-
-    delete window[callbackName];
-    document.body.removeChild(script);
-  };
-
-  document.body.appendChild(script);
-}
-
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-function selectAnswer(selectedOption) {
+function selectAnswer(selectedOption, correctAnswer) {
   const currentQuestion = questions[currentQuestionIndex];
-  if (selectedOption === currentQuestion.answer) {
+  if (selectedOption === correctAnswer) {
     score++;
     alert("Correct!");
   } else {
@@ -108,30 +62,82 @@ function showResults() {
   questionElement.innerText = `${playerName}, your score is ${score} out of ${questions.length}.`;
   answersElement.innerHTML = '';
   nextButton.style.display = 'none';
+
+  // Save score to local storage
   saveScore(playerName, score);
   displayScores();
 }
 
 function saveScore(name, score) {
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
-  scores.push({ name, score });
+  scores.push({ name: name, score: score });
   localStorage.setItem('scores', JSON.stringify(scores));
 }
 
 function displayScores() {
-  const scoreList = document.getElementById('score-list') || document.createElement('ul');
-  scoreList.id = 'score-list';
-  document.body.appendChild(scoreList);
-  scoreList.innerHTML = '';
+  const scoreList = document.getElementById('score-list');
+  scoreList.innerHTML = ''; // Clear existing scores
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
-  scores.forEach(entry => {
+
+  scores.forEach((entry, index) => {
     const li = document.createElement('li');
     li.innerText = `${entry.name}: ${entry.score}`;
     scoreList.appendChild(li);
   });
 }
 
-startQuiz();
+// Load audio question from Deezer
+function loadAudioQuestion(query) {
+  const script = document.createElement("script");
+  script.src = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&output=jsonp&callback=handleDeezerResponse`;
+  document.body.appendChild(script);
+}
+
+window.handleDeezerResponse = function(response) {
+  if (!response || !response.data || response.data.length === 0) {
+    questionElement.innerText = "Sorry, couldn't find that track.";
+    return;
+  }
+
+  const track = response.data[0];
+  const previewUrl = track.preview;
+  const correctArtist = track.artist.name;
+  const questionText = `Who sings this song?`;
+
+  questionElement.innerText = questionText;
+  answersElement.innerHTML = '';
+
+  const audio = document.createElement("audio");
+  audio.src = previewUrl;
+  audio.controls = true;
+  answersElement.appendChild(audio);
+
+  // Button to play the audio
+  const playBtn = document.createElement('button');
+  playBtn.innerText = '▶️ Play Snippet';
+  playBtn.classList.add('btn');
+  playBtn.onclick = () => audio.play();
+  answersElement.appendChild(playBtn);
+
+  // Generate 3 random artists + correct one
+  const options = [correctArtist];
+  while (options.length < 4) {
+    const randomTrack = response.data[Math.floor(Math.random() * response.data.length)];
+    const name = randomTrack.artist.name;
+    if (!options.includes(name)) options.push(name);
+  }
+
+  // Shuffle options
+  options.sort(() => Math.random() - 0.5);
+
+  options.forEach(option => {
+    const button = document.createElement("button");
+    button.innerText = option;
+    button.classList.add('btn');
+    button.addEventListener('click', () => selectAnswer(option, correctArtist));
+    answersElement.appendChild(button);
+  });
+};
 
 // Start the quiz when the page loads
 startQuiz();
