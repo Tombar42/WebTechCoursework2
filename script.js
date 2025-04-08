@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    function showQuestion() {
+     function showQuestion() {
         if (currentQuestionIndex < tracks.length) {
             currentTrack = tracks[currentQuestionIndex];
             if (questionElement) questionElement.innerText = `Who is the artist of the track: "${currentTrack.name}"?`;
@@ -103,8 +103,13 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             if (nextButton) nextButton.style.display = 'none';
 
-            // Play the audio snippet
-            playAudioSnippet(currentTrack.preview_url);
+            // Play the audio snippet ONLY if preview_url exists
+            if (currentTrack.preview_url) {
+                playAudioSnippet(currentTrack.preview_url);
+            } else {
+                console.warn(`No preview URL available for track: ${currentTrack.name}`);
+                // Optionally provide feedback to the user that no audio is available
+            }
 
         } else {
             showResults();
