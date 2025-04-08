@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const clientId = '315f4b7ea08247d98712188666b73534'; // Replace with your Spotify Client ID
     const clientSecret = '77b0af707778471e8d7cf066d6a56276'; // Replace with your Spotify Client Secret
 
+
     let currentQuestionIndex = 0;
     let score = 0;
     let tracks = [];
@@ -25,8 +26,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // Start the quiz
     async function startQuiz() {
-        if (startButton) startButton.style.display = 'none'; // Hide the start button
-        if (quizContainer) quizContainer.style.display = 'block'; // Show the quiz container
+        console.log("startQuiz called");
+        if (startButton) startButton.style.display = 'none';
+        if (quizContainer) quizContainer.style.display = 'block';
         await loadTracks();
         if (tracks.length > 0) {
             showQuestion();
@@ -36,7 +38,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    // Get Access Token from Spotify
     async function getAccessToken() {
         const response = await fetch('https://accounts.spotify.com/api/token', {
             method: 'POST',
@@ -51,11 +52,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         return data.access_token;
     }
 
-    // Load a list of tracks from Spotify
     async function loadTracks() {
         const accessToken = await getAccessToken();
-        const searchTerm = 'pop'; // Or change to a dynamic search term based on quiz
-        const url = `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=10`; // Corrected Spotify Search URL
+        const searchTerm = 'pop';
+        const url = `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=10`;
 
         const response = await fetch(url, {
             method: 'GET',
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const data = await response.json();
         if (data && data.tracks && data.tracks.items) {
             tracks = data.tracks.items;
-            console.log("Loaded tracks:", tracks); // Inspect the data to see if preview_url is present
+            console.log("Loaded tracks:", tracks);
         } else {
             console.error("Error loading tracks:", data);
             if (questionElement) questionElement.innerText = 'Failed to load tracks from Spotify.';
@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    // Show the current question
     function showQuestion() {
         if (currentQuestionIndex < tracks.length) {
             currentTrack = tracks[currentQuestionIndex];
@@ -96,13 +95,13 @@ document.addEventListener('DOMContentLoaded', async function() {
                 allAnswers.forEach(answer => {
                     const button = document.createElement('button');
                     button.innerText = answer;
-                    button.classList.add('btn'); // Keep the 'btn' class for styling
+                    button.classList.add('btn');
                     button.addEventListener('click', () => selectAnswer(answer));
                     answersElement.appendChild(button);
                 });
             }
 
-            if (nextButton) nextButton.style.display = 'none'; // Hide next button initially
+            if (nextButton) nextButton.style.display = 'none';
 
             // Play the audio snippet
             playAudioSnippet(currentTrack.preview_url);
@@ -112,22 +111,37 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    // Function to play a 5-second audio snippet
     function playAudioSnippet(audioUrl) {
+        console.log("playAudioSnippet called with URL:", audioUrl);
         if (audioElement && audioUrl) {
             audioElement.src = audioUrl;
-            audioElement.play().catch(error => {
-                console.error("Error playing audio:", error);
-                // Handle potential errors (e.g., browser autoplay restrictions)
-            });
-            setTimeout(() => {
-                audioElement.pause();
-                audioElement.currentTime = 0; // Reset playback to the beginning
-            }, 5000); // Stop after 5000 milliseconds (5 seconds)
+            audioElement.load(); // Ensure the new source is loaded
+            const playPromise = audioElement.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log("Audio playback started");
+                    setTimeout(() => {
+                        audioElement.pause();
+                        audioElement.currentTime = 0;
+                        console.log("Audio playback stopped after 5 seconds");
+                    }, 5000);
+                }).catch(error => {
+                    console.error("Error playing audio:", error);
+                    console.warn("Attempting to play audio after user interaction...");
+                    // Try playing again after a short delay (might help with autoplay issues)
+                    setTimeout(() => {
+                        audioElement.play().catch(retryError => {
+                            console.error("Retry play failed:", retryError);
+                        });
+                    }, 500);
+                });
+            }
+        } else {
+            console.warn("audioElement is null or audioUrl is missing.");
         }
     }
 
-    // Handle the answer selection
     function selectAnswer(selectedAnswer) {
         const correctAnswer = currentTrack.artists[0].name;
         const answerButtons = answersElement.querySelectorAll('button');
@@ -147,13 +161,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (nextButton) nextButton.style.display = 'block';
     }
 
-    // Move to the next question
     function nextQuestion() {
         currentQuestionIndex++;
         showQuestion();
     }
 
-    // Show the results of the quiz
     function showResults() {
         if (quizContainer) quizContainer.style.display = 'none';
         if (resultsContainer) resultsContainer.style.display = 'block';
@@ -169,16 +181,15 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
-    // Restart the quiz
     function restartQuiz() {
         currentQuestionIndex = 0;
         score = 0;
         tracks = [];
         if (resultsContainer) resultsContainer.style.display = 'none';
-        if (startButton) startButton.style.display = 'flex'; // Show the start button again
+        if (startButton) startButton.style.display = 'flex';
         if (musicResultsElement) musicResultsElement.innerHTML = '';
-        loadTracks(); // Reload tracks for a new quiz
-        if (quizContainer) quizContainer.style.display = 'none'; // Ensure quiz container is hidden
+        loadTracks();
+        if (quizContainer) quizContainer.style.display = 'none';
         if (audioElement) {
             audioElement.pause();
             audioElement.currentTime = 0;
