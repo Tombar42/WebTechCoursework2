@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const clientId = 'YOUR_SPOTIFY_CLIENT_ID'; 
-    const clientSecret = 'YOUR_SPOTIFY_CLIENT_SECRET';
+    const clientId = '315f4b7ea08247d98712188666b73534'; 
+    const clientSecret = '77b0af707778471e8d7cf066d6a56276';
     
     let currentQuestionIndex = 0;
     let score = 0;
