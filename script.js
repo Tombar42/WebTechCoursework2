@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     const searchTerm = 'top hits';
-    const url = `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=10`;
+    const url = `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=50`;
 
     try {
         const response = await fetch(url, {
