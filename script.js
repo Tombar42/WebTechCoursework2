@@ -23,41 +23,71 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (restartButton) restartButton.addEventListener('click', restartQuiz);
 
     async function getAccessToken() {
-        const response = await fetch('https://accounts.spotify.com/api/token', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'grant_type=client_credentials',
-        });
+        try {
+            const response = await fetch('https://accounts.spotify.com/api/token', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'grant_type=client_credentials',
+            });
 
-        const data = await response.json();
-        return data.access_token;
+            if (!response.ok) {
+                throw new Error(`Spotify Token Error: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            return data.access_token;
+        } catch (error) {
+            console.error("Error fetching access token:", error);
+            return null;
+        }
     }
 
     async function loadTracks() {
         const accessToken = await getAccessToken();
+        if (!accessToken) {
+            displayError("Failed to authenticate with Spotify.");
+            return;
+        }
+
         const searchTerm = 'pop';
         const url = `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=10`;
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-            }
-        });
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                }
+            });
 
-        const data = await response.json();
-        tracks = data?.tracks?.items || [];
+            if (!response.ok) {
+                throw new Error(`Spotify API Error: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            tracks = data.tracks?.items || [];
+
+            if (tracks.length === 0) {
+                displayError("No tracks found. Try a different search term.");
+            }
+        } catch (error) {
+            console.error("Error fetching tracks:", error);
+            displayError("Failed to load tracks.");
+        }
     }
 
     async function startQuiz() {
         if (startButton) startButton.style.display = 'none';
         if (quizContainer) quizContainer.style.display = 'block';
+        
         await loadTracks();
 
-        tracks.length ? showQuestion() : displayError("Failed to load tracks.");
+        if (tracks.length > 0) {
+            showQuestion();
+        }
     }
 
     function showQuestion() {
@@ -146,4 +176,3 @@ document.addEventListener('DOMContentLoaded', async function () {
         answersElement.innerHTML = '';
     }
 });
-
