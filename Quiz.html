@@ -6,7 +6,7 @@
     <title>Music Quiz</title>
     <link rel="stylesheet" href="Styles.css">
     <style>
-        /* Add or modify styles here to accommodate the start button */
+        /* Add or modify styles here to accommodate the start button and audio player */
         .start-button {
             padding: 20px 60px;
             font-size: 2rem;
@@ -70,6 +70,10 @@
         .nextButton:hover {
             background-color: rgba(255, 255, 255, 0.3);
         }
+        #audioPlayer {
+            width: 100%;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -84,6 +88,7 @@
             <h2 id="question"></h2>
             <div id="answers"></div>
             <button id="nextButton" class="btn nextButton" style="display: none;">Next Question</button>
+            <audio id="audioPlayer" controls style="width: 100%; margin-top: 20px;"></audio>
         </div>
         <div id="results">
             <h2>Quiz Results</h2>
