@@ -1,25 +1,18 @@
 const questions = [
   {
+    type: "text",
     question: "What is the name of the artist who sang 'Shape of You'?",
     answer: "Ed Sheeran",
     options: ["Ed Sheeran", "Justin Bieber", "Drake", "Katy Perry"]
   },
   {
-    question: "Which band is known for the song 'Bohemian Rhapsody'?",
-    answer: "Queen",
-    options: ["Queen", "The Beatles", "Nirvana", "Pink Floyd"]
-  },
-  {
-    question: "What year did Michael Jackson release 'Thriller'?",
-    answer: "1982",
-    options: ["1982", "1984", "1980", "1986"]
-  },
-  {
-    question: "Who is known as the 'Queen of Pop'?",
-    answer: "Madonna",
-    options: ["Madonna", "Beyoncé", "Lady Gaga", "Taylor Swift"]
+    type: "audio",
+    query: "Imagine Dragons", // Search keyword for Deezer
+    answer: "", // Will be dynamically set
+    options: [] // Will be dynamically set
   }
 ];
+
 
 let currentQuestionIndex = 0;
 let score = 0;
@@ -39,17 +32,25 @@ function startQuiz() {
 }
 
 function showQuestion(question) {
-  questionElement.innerText = question.question;
+  questionElement.innerText = '';
   answersElement.innerHTML = '';
+  nextButton.style.display = 'none';
 
-  question.options.forEach(option => {
-    const button = document.createElement('button');
-    button.innerText = option;
-    button.classList.add('btn');
-    button.addEventListener('click', () => selectAnswer(option));
-    answersElement.appendChild(button);
-  });
+  if (question.type === 'text') {
+    questionElement.innerText = question.question;
+    question.options.forEach(option => {
+      const btn = document.createElement('button');
+      btn.innerText = option;
+      btn.classList.add('btn');
+      btn.addEventListener('click', () => selectAnswer(option));
+      answersElement.appendChild(btn);
+    });
+  } else if (question.type === 'audio') {
+    questionElement.innerText = 'Which song is this?';
+    loadAudioQuestion(question);
+  }
 }
+
 
 function selectAnswer(selectedOption) {
   const currentQuestion = questions[currentQuestionIndex];
