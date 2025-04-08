@@ -25,15 +25,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const answersElement = document.getElementById('answers');
   const playButton = document.getElementById('play-btn');
   const nextButton = document.getElementById('next-btn');
-  let audioPlayer = null;  // This will hold the audio object
+  let audioPlayer = null;
 
   // Show current question and options
   function showQuestion() {
-    const question = questions[currentQuestionIndex];
-    questionElement.innerText = question.question;
-    answersElement.innerHTML = '';
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.innerText = currentQuestion.question;
+    answersElement.innerHTML = '';  // Clear previous answers
 
-    question.options.forEach(option => {
+    // Display answer options
+    currentQuestion.options.forEach(option => {
       const button = document.createElement('button');
       button.innerText = option;
       button.classList.add('btn');
@@ -41,36 +42,14 @@ document.addEventListener('DOMContentLoaded', function () {
       answersElement.appendChild(button);
     });
 
-    // Display play button for audio snippet
-    playButton.style.display = 'inline-block';
-    playButton.onclick = () => playAudio(question.trackId);
+    // Display play button for music snippet
+    playButton.style.display = 'block';
+    playButton.onclick = function() {
+      playSnippet(currentQuestion.trackId);  // Play music snippet when clicked
+    };
   }
 
-  // Fetch track preview URL from Deezer API and play it
-  function playAudio(trackId) {
-    fetch(`https://api.deezer.com/track/${trackId}`)
-      .then(response => response.json())
-      .then(data => {
-        const previewUrl = data.preview;
-        if (previewUrl) {
-          // Stop any existing audio before playing a new one
-          if (audioPlayer) {
-            audioPlayer.pause();
-          }
-
-          // Create a new audio player and play the snippet
-          audioPlayer = new Audio(previewUrl);
-          audioPlayer.play();
-        } else {
-          alert("No preview available for this track.");
-        }
-      })
-      .catch(error => {
-        console.error("Error fetching track:", error);
-      });
-  }
-
-  // Handle answer selection
+  // Select answer and check if it's correct
   function selectAnswer(selectedOption) {
     const currentQuestion = questions[currentQuestionIndex];
     if (selectedOption === currentQuestion.answer) {
@@ -78,21 +57,46 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       alert("Wrong answer!");
     }
-    nextButton.style.display = 'block'; // Show next button
+
+    nextButton.style.display = 'block';
   }
 
-  // Show next question
+  // Play music snippet
+  function playSnippet(trackId) {
+    const url = `https://api.deezer.com/track/${trackId}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (audioPlayer) {
+          audioPlayer.pause();  // Stop previous track
+        }
+
+        audioPlayer = new Audio(data.preview);  // Get the preview URL
+        audioPlayer.play();  // Play the preview
+      })
+      .catch(error => console.error("Error fetching track:", error));
+  }
+
+  // Proceed to next question
   nextButton.addEventListener('click', () => {
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
       showQuestion();
-      nextButton.style.display = 'none'; // Hide next button again
+      nextButton.style.display = 'none';
     } else {
-      alert("Quiz finished!");
+      showResults();
     }
   });
+
+  // Display results
+  function showResults() {
+    questionElement.innerText = `Quiz completed! Your score is ${currentQuestionIndex + 1} out of ${questions.length}.`;
+    answersElement.innerHTML = '';
+    nextButton.style.display = 'none';
+  }
 
   // Start the quiz
   showQuestion();
 });
+
 
