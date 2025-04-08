@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const scoreElement = document.getElementById('score');
     const restartButton = document.getElementById('restartButton');
     const musicResultsElement = document.getElementById('musicResults');
+    const audioElement = document.getElementById('audioPlayer'); // Get the audio element
 
     if (startButton) startButton.addEventListener('click', startQuiz);
     if (nextButton) nextButton.addEventListener('click', nextQuestion);
@@ -66,6 +67,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const data = await response.json();
         if (data && data.tracks && data.tracks.items) {
             tracks = data.tracks.items;
+            console.log("Loaded tracks:", tracks); // Inspect the data to see if preview_url is present
         } else {
             console.error("Error loading tracks:", data);
             if (questionElement) questionElement.innerText = 'Failed to load tracks from Spotify.';
@@ -101,8 +103,27 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
 
             if (nextButton) nextButton.style.display = 'none'; // Hide next button initially
+
+            // Play the audio snippet
+            playAudioSnippet(currentTrack.preview_url);
+
         } else {
             showResults();
+        }
+    }
+
+    // Function to play a 5-second audio snippet
+    function playAudioSnippet(audioUrl) {
+        if (audioElement && audioUrl) {
+            audioElement.src = audioUrl;
+            audioElement.play().catch(error => {
+                console.error("Error playing audio:", error);
+                // Handle potential errors (e.g., browser autoplay restrictions)
+            });
+            setTimeout(() => {
+                audioElement.pause();
+                audioElement.currentTime = 0; // Reset playback to the beginning
+            }, 5000); // Stop after 5000 milliseconds (5 seconds)
         }
     }
 
@@ -158,5 +179,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (musicResultsElement) musicResultsElement.innerHTML = '';
         loadTracks(); // Reload tracks for a new quiz
         if (quizContainer) quizContainer.style.display = 'none'; // Ensure quiz container is hidden
+        if (audioElement) {
+            audioElement.pause();
+            audioElement.currentTime = 0;
+        }
     }
 });
