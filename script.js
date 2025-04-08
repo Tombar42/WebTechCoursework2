@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const musicResultsElement = document.getElementById('musicResults');
     const audioElement = document.getElementById('audioPlayer');
 
+    // Ensure buttons exist before adding event listeners
     if (startButton) startButton.addEventListener('click', startQuiz);
     if (nextButton) nextButton.addEventListener('click', nextQuestion);
     if (restartButton) restartButton.addEventListener('click', restartQuiz);
@@ -123,17 +124,23 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function playAudioSnippet(audioUrl) {
-        if (!audioElement || !audioUrl) return;
-        
+        if (!audioUrl) {
+            console.warn("No preview URL available for this track.");
+            return;
+        }
+
+        if (!audioElement) {
+            console.error("Audio element not found.");
+            return;
+        }
+
+        console.log("Playing audio:", audioUrl);
         audioElement.src = audioUrl;
         audioElement.load();
         
-        audioElement.play().then(() => {
-            setTimeout(() => {
-                audioElement.pause();
-                audioElement.currentTime = 0;
-            }, 5000);
-        }).catch(() => console.warn("Autoplay blocked; try interacting first."));
+        audioElement.play().catch(error => {
+            console.warn("Autoplay blocked. Try clicking play manually.", error);
+        });
     }
 
     function selectAnswer(selectedAnswer, correctAnswer) {
