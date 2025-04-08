@@ -124,24 +124,27 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function playAudioSnippet(audioUrl) {
-        if (!audioUrl) {
-            console.warn("No preview URL available for this track.");
-            return;
-        }
-
-        if (!audioElement) {
-            console.error("Audio element not found.");
-            return;
-        }
-
-        console.log("Playing audio:", audioUrl);
-        audioElement.src = audioUrl;
-        audioElement.load();
-        
-        audioElement.play().catch(error => {
-            console.warn("Autoplay blocked. Try clicking play manually.", error);
-        });
+    if (!audioUrl) {
+        console.warn("No preview URL available for this track.");
+        questionElement.innerText = "⚠️ No preview available for this track!";
+        return;
     }
+
+    const audioElement = document.getElementById("audioPlayer");
+    if (!audioElement) {
+        console.error("Audio element not found.");
+        return;
+    }
+
+    console.log("Playing audio:", audioUrl);
+    audioElement.src = audioUrl;
+    audioElement.load();
+
+    audioElement.play().catch(error => {
+        console.warn("Autoplay blocked—try clicking the play button manually.", error);
+    });
+}
+
 
     function selectAnswer(selectedAnswer, correctAnswer) {
         [...answersElement.children].forEach(button => {
