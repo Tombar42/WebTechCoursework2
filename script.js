@@ -6,13 +6,13 @@ let score = 0;
 let tracks = [];
 let currentTrack = {};
 
-document.getElementById('startButton').addEventListener('click', startQuiz);
+document.getElementById('btn').addEventListener('click', startQuiz);
 document.getElementById('nextButton').addEventListener('click', nextQuestion);
 document.getElementById('restartButton').addEventListener('click', restartQuiz);
 
 // Start the quiz
 async function startQuiz() {
-  document.getElementById('startButton').style.display = 'none';
+  document.getElementById('btn').style.display = 'none';
   document.getElementById('quizContainer').style.display = 'block';
   await loadTracks();
   showQuestion();
