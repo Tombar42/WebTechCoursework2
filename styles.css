@@ -38,9 +38,10 @@ body {
   z-index: -1;
 }
 #audioPlayer {
-            width: 100%;
-            margin-top: 20px;
-        }
+    width: 100%;
+    margin-top: 20px;
+    backdrop-filter: blur(10px);
+}
 
 
 h1 {
