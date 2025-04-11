@@ -1,0 +1,49 @@
+body {
+    font-family: "Funnel Display", sans-serif;
+    text-align: center;
+    background-image: url("bg.png");
+    color: white;
+}
+h1 {
+    margin-top: 50px;
+}
+.team {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+.member {
+    margin-top: 30px;
+}
+.memberPIC {
+    position: relative;
+    overflow: hidden;
+}
+.memberPIC img {
+    width: 100%;
+    display: block;
+}
+address {
+    font-size: medium;
+}
+
+
+@media all and (max-width: 800px) {
+    .team {
+        justify-content: space-around;
+    }
+}
+@media all and (max-width: 600px) {
+    .team {
+        flex-flow: column wrap;
+        padding: 0;
+    }
+    .team a {
+        text-align: center;
+        padding: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .team li:last-of-type a {
+        border-bottom: none;
+    }
+}
