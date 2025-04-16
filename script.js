@@ -1,68 +1,76 @@
 const questions = [
   {
     type: "audio",
-    question: "Which band performs this song?",
-    src: "audio/Abba - Waterloo_Reveal.mp3",
+    question: "Which band performs this classic pop anthem?",
+    src: "Abba - Waterloo_Reveal.mp3",
     answer: "ABBA",
     options: ["ABBA", "Queen", "Ace of Base", "Bananarama"]
   },
   {
     type: "audio",
-    question: "Who's behind this boy band anthem?",
-    src: "audio/Backstreet boys - Everybody_Reveal.mp3",
+    question: "Who's the boy band behind this hit?",
+    src: "Backstreet boys - Everybody_Reveal.mp3",
     answer: "Backstreet Boys",
-    options: ["Backstreet Boys", "NSYNC", "Boyz II Men", "One Direction"]
+    options: ["Backstreet Boys", "NSYNC", "One Direction", "Boyz II Men"]
   },
   {
     type: "audio",
-    question: "Who sings this 80s hit?",
-    src: "audio/Billy Joel - Uptown Girl_Reveal.mp3",
-    answer: "Billy Joel",
-    options: ["Billy Joel", "Phil Collins", "Elton John", "George Michael"]
-  },
-  {
-    type: "audio",
-    question: "Can you name the band behind this rock classic?",
-    src: "audio/Bon Jovi - Livin' On A Prayer_Reveal.mp3",
-    answer: "Bon Jovi",
-    options: ["Bon Jovi", "Aerosmith", "Guns N' Roses", "KISS"]
-  },
-  {
-    type: "audio",
-    question: "Who's the artist of this catchy pop song?",
-    src: "audio/Carly Rae Jepsen - Call Me Maybe_Reveal.mp3",
-    answer: "Carly Rae Jepsen",
-    options: ["Carly Rae Jepsen", "Katy Perry", "Avril Lavigne", "Selena Gomez"]
-  },
-  {
-    type: "audio",
-    question: "Who performs this classic rock tune?",
-    src: "audio/Fleetwood Mac - Go Your Own Way_Reveal.mp3",
+    question: "Which iconic band released this track?",
+    src: "Fleetwood Mac - Go Your Own Way_Reveal.mp3",
     answer: "Fleetwood Mac",
-    options: ["Fleetwood Mac", "The Eagles", "The Rolling Stones", "The Beatles"]
+    options: ["Fleetwood Mac", "The Eagles", "Journey", "Chicago"]
   },
   {
     type: "audio",
-    question: "Name the artist of this modern hit.",
-    src: "audio/George Ezra - Shotgun_Reveal.mp3",
-    answer: "George Ezra",
-    options: ["George Ezra", "Ed Sheeran", "James Bay", "Sam Fender"]
+    question: "Who’s the artist behind this timeless pop track?",
+    src: "Madonna - Like A Prayer_Reveal.mp3",
+    answer: "Madonna",
+    options: ["Madonna", "Cyndi Lauper", "Whitney Houston", "Janet Jackson"]
   },
   {
     type: "audio",
-    question: "Which band performs this iconic Australian track?",
-    src: "audio/Men At Work - Down Under_Reveal.mp3",
-    answer: "Men At Work",
-    options: ["Men At Work", "INXS", "Midnight Oil", "Crowded House"]
+    question: "Which artist is singing this R&B jam?",
+    src: "Usher - Yeah_Reveal.mp3",
+    answer: "Usher",
+    options: ["Usher", "Chris Brown", "R. Kelly", "Ne-Yo"]
   },
   {
     type: "audio",
-    question: "Who sings this party anthem?",
-    src: "audio/Pink - Get The Party Started_Reveal.mp3",
-    answer: "Pink",
-    options: ["Pink", "Lady Gaga", "Avril Lavigne", "Christina Aguilera"]
+    question: "Who’s the group behind this funky hit?",
+    src: "Outkast - Hey Ya_Reveal.mp3",
+    answer: "Outkast",
+    options: ["Outkast", "Black Eyed Peas", "N.E.R.D", "The Roots"]
+  },
+  {
+    type: "audio",
+    question: "Who's singing this hit track from the 2000s?",
+    src: "Rihanna - Umbrella_Reveal.mp3",
+    answer: "Rihanna",
+    options: ["Rihanna", "Beyoncé", "Ciara", "Ashanti"]
+  },
+  {
+    type: "audio",
+    question: "Which band made this rock anthem?",
+    src: "Queen - We Will Rock You_Reveal.mp3",
+    answer: "Queen",
+    options: ["Queen", "The Rolling Stones", "The Beatles", "Led Zeppelin"]
+  },
+  {
+    type: "audio",
+    question: "Who performs this iconic 90s pop song?",
+    src: "Spice Girls - Wannabe_Reveal.mp3",
+    answer: "Spice Girls",
+    options: ["Spice Girls", "All Saints", "TLC", "Destiny's Child"]
+  },
+  {
+    type: "audio",
+    question: "Who's the artist on this rap classic?",
+    src: "Eminem - Lose Yourself_Reveal.mp3",
+    answer: "Eminem",
+    options: ["Eminem", "Dr. Dre", "50 Cent", "Kanye West"]
   }
 ];
+
 
 let currentQuestionIndex = 0;
 let score = 0;
