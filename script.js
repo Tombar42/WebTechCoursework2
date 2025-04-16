@@ -88,6 +88,20 @@ function showQuestion(question) {
   questionElement.innerText = question.question;
   answersElement.innerHTML = '';
 
+  // Handle audio (if it's an audio-based question)
+  const audioPlayer = document.getElementById('audioPlayer');
+  if (question.src) {
+    audioPlayer.src = question.src;
+    audioPlayer.style.display = 'block';
+    audioPlayer.currentTime = 0;
+    audioPlayer.play();
+  } else {
+    audioPlayer.style.display = 'none';
+    audioPlayer.pause();
+    audioPlayer.removeAttribute('src');
+  }
+
+  // Show answer options
   question.options.forEach(option => {
     const button = document.createElement('button');
     button.innerText = option;
@@ -96,6 +110,7 @@ function showQuestion(question) {
     answersElement.appendChild(button);
   });
 }
+
 
 function selectAnswer(selectedOption) {
   const currentQuestion = questions[currentQuestionIndex];
