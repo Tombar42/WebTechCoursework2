@@ -96,27 +96,47 @@ function showQuestion(question) {
   questionElement.innerText = question.question;
   answersElement.innerHTML = '';
 
-  // Handle audio (if it's an audio-based question)
   const audioPlayer = document.getElementById('audioPlayer');
+  let currentTimeout; // To store the ID of the current timeout
+
   if (question.src) {
     audioPlayer.src = question.src;
     audioPlayer.style.display = 'block';
     audioPlayer.currentTime = 0;
     audioPlayer.play();
 
-// Stop the audio after 10 seconds and make it unplayable
-    setTimeout(() => {
+    // Clear any existing timeout from the previous question
+    if (currentTimeout) {
+      clearTimeout(currentTimeout);
+    }
+
+    // Set the timeout for the current question
+    currentTimeout = setTimeout(() => {
       audioPlayer.pause();
       audioPlayer.currentTime = 0;
-      audioPlayer.removeAttribute('src');  // Remove the source to prevent replaying
-      audioPlayer.style.display = 'none';  // Hide the audio player
-      audioPlayer.disabled = true;  // Disable the player to prevent future play
-    }, 10500); // 10000 milliseconds = 10 seconds
+      audioPlayer.removeAttribute('src');
+      audioPlayer.style.display = 'none';
+      audioPlayer.disabled = true;
+    }, 10500); // 10.5 seconds to ensure it stops after 10 seconds of playback
+
   } else {
     audioPlayer.style.display = 'none';
     audioPlayer.pause();
     audioPlayer.removeAttribute('src');
+    // Optionally clear any existing timeout even if there's no new audio
+    if (currentTimeout) {
+      clearTimeout(currentTimeout);
+    }
   }
+
+  question.options.forEach(option => {
+    const button = document.createElement('button');
+    button.innerText = option;
+    button.classList.add('btn');
+    button.addEventListener('click', () => selectAnswer(option));
+    answersElement.appendChild(button);
+  });
+}
 
 
   // Show answer options
