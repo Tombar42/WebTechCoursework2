@@ -105,11 +105,6 @@ function showQuestion(question) {
     audioPlayer.currentTime = 0;
     audioPlayer.play();
 
-    // Clear any existing timeout from the previous question
-    if (currentTimeout) {
-      clearTimeout(currentTimeout);
-    }
-
     // Set the timeout for the current question
     currentTimeout = setTimeout(() => {
       audioPlayer.pause();
@@ -133,10 +128,10 @@ function showQuestion(question) {
     button.classList.add('btn');
     button.addEventListener('click', () => selectAnswer(option));
     answersElement.appendChild(button);
-
+}
     if (currentTimeout) {
       clearTimeout(currentTimeout);
-    }
+    
   }
   });
 }
