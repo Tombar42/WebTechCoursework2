@@ -1,73 +1,73 @@
 const questions = [
   {
     type: "audio",
-    question: "Which band performs this classic pop anthem?",
+    question: "Identify the iconic group behind the timeless hit 'Waterloo'.",
     src: "Abba - Waterloo_Reveal.mp3",
     answer: "ABBA",
     options: ["Ace of Base", "Queen", "ABBA", "Bananarama"]
   },
   {
     type: "audio",
-    question: "Who's the boy band behind this hit?",
+    question: "Can you name the boy band that sang the energetic track 'Everybody'?",
     src: "Backstreet boys - Everybody_Reveal.mp3",
     answer: "Backstreet Boys",
     options: ["Boyz II Men", "NSYNC", "One Direction", "Backstreet Boys"]
   },
   {
     type: "audio",
-    question: "Which iconic band released this track?",
+    question: "Recognize the artist who serenaded us with 'Uptown Girl'.",
+    src: "Billy Joel - Uptown Girl_Reveal.mp3",
+    answer: "Billy Joel",
+    options: ["Elton John", "Billy Joel", "Lionel Richie", "George Michael"]
+  },
+  {
+    type: "audio",
+    question: "Which legendary rock act delivered the powerful anthem 'Livin' On A Prayer'?",
+    src: "Bon Jovi - Livin' On A Prayer_Reveal.mp3",
+    answer: "Bon Jovi",
+    options: ["Bruce Springsteen", "Bon Jovi", "Bryan Adams", "Jon Bonham"]
+  },
+  {
+    type: "audio",
+    question: "Pinpoint the singer responsible for the catchy pop sensation 'Call Me Maybe'.",
+    src: "Carly Rae Jepsen - Call Me Maybe_Reveal.mp3",
+    answer: "Carly Rae Jepsen",
+    options: ["Taylor Swift", "Katy Perry", "Carly Rae Jepsen", "Selena Gomez"]
+  },
+  {
+    type: "audio",
+    question: "Determine the acclaimed band that gifted us the poignant track 'Go Your Own Way'.",
     src: "Fleetwood Mac - Go Your Own Way_Reveal.mp3",
     answer: "Fleetwood Mac",
     options: ["Fleetwood Mac", "The Eagles", "Journey", "Chicago"]
   },
   {
     type: "audio",
-    question: "Who’s the artist behind this timeless pop track?",
-    src: "Madonna - Like A Prayer_Reveal.mp3",
-    answer: "Madonna",
-    options: ["Cyndi Lauper", "Madonna", "Whitney Houston", "Janet Jackson"]
+    question: "Identify the voice behind the upbeat hit 'Shotgun'.",
+    src: "George Ezra - Shotgun_Reveal.mp3",
+    answer: "George Ezra",
+    options: ["Ed Sheeran", "George Ezra", "James Blunt", "Tom Walker"]
   },
   {
     type: "audio",
-    question: "Which artist is singing this R&B jam?",
-    src: "Usher - Yeah_Reveal.mp3",
-    answer: "Usher",
-    options: ["Ne-Yo", "Chris Brown", "R. Kelly", "Usher"]
+    question: "Which Australian band is famous for the iconic song 'Down Under'?",
+    src: "Men At Work - Down Under_Reveal.mp3",
+    answer: "Men At Work",
+    options: ["INXS", "Crowded House", "Men At Work", "Midnight Oil"]
   },
   {
     type: "audio",
-    question: "Who’s the group behind this funky hit?",
-    src: "Outkast - Hey Ya_Reveal.mp3",
-    answer: "Outkast",
-    options: ["Outkast", "Black Eyed Peas", "N.E.R.D", "The Roots"]
+    question: "Name the artist who urged us to 'Get The Party Started' with this energetic track.",
+    src: "Pink - Get The Party Started_Reveal.mp3",
+    answer: "Pink",
+    options: ["Gwen Stefani", "Avril Lavigne", "Pink", "Christina Aguilera"]
   },
   {
     type: "audio",
-    question: "Who's singing this hit track from the 2000s?",
-    src: "Rihanna - Umbrella_Reveal.mp3",
-    answer: "Rihanna",
-    options: ["Ciara", "Beyoncé", "Rihanna", "Ashanti"]
-  },
-  {
-    type: "audio",
-    question: "Which band made this rock anthem?",
-    src: "Queen - We Will Rock You_Reveal.mp3",
-    answer: "Queen",
-    options: ["The Rolling Stones", "Queen", "The Beatles", "Led Zeppelin"]
-  },
-  {
-    type: "audio",
-    question: "Who performs this iconic 90s pop song?",
-    src: "Spice Girls - Wannabe_Reveal.mp3",
-    answer: "Spice Girls",
-    options: ["Destiny's Child", "All Saints", "TLC", "Spice Girls"]
-  },
-  {
-    type: "audio",
-    question: "Who's the artist on this rap classic?",
-    src: "Eminem - Lose Yourself_Reveal.mp3",
-    answer: "Eminem",
-    options: ["50 Cent", "Dr. Dre", "Eminem", "Kanye West"]
+    question: "Recognize the group that encouraged us to believe in 'We Built This City'.",
+    src: "Starship - We Built This City_Reveal.mp3",
+    answer: "Starship",
+    options: ["Journey", "REO Speedwagon", "Starship", "Foreigner"]
   }
 ];
 // music from https://quizmasters.biz/
