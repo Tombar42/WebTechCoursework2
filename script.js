@@ -1,23 +1,66 @@
 const questions = [
   {
-    question: "What is the name of the artist who sang 'Shape of You'?",
-    answer: "Ed Sheeran",
-    options: ["Ed Sheeran", "Justin Bieber", "Drake", "Katy Perry"]
+    type: "audio",
+    question: "Which band performs this song?",
+    src: "audio/Abba - Waterloo_Reveal.mp3",
+    answer: "ABBA",
+    options: ["ABBA", "Queen", "Ace of Base", "Bananarama"]
   },
   {
-    question: "Which band is known for the song 'Bohemian Rhapsody'?",
-    answer: "Queen",
-    options: ["Queen", "The Beatles", "Nirvana", "Pink Floyd"]
+    type: "audio",
+    question: "Who's behind this boy band anthem?",
+    src: "audio/Backstreet boys - Everybody_Reveal.mp3",
+    answer: "Backstreet Boys",
+    options: ["Backstreet Boys", "NSYNC", "Boyz II Men", "One Direction"]
   },
   {
-    question: "What year did Michael Jackson release 'Thriller'?",
-    answer: "1982",
-    options: ["1982", "1984", "1980", "1986"]
+    type: "audio",
+    question: "Who sings this 80s hit?",
+    src: "audio/Billy Joel - Uptown Girl_Reveal.mp3",
+    answer: "Billy Joel",
+    options: ["Billy Joel", "Phil Collins", "Elton John", "George Michael"]
   },
   {
-    question: "Who is known as the 'Queen of Pop'?",
-    answer: "Madonna",
-    options: ["Madonna", "Beyoncé", "Lady Gaga", "Taylor Swift"]
+    type: "audio",
+    question: "Can you name the band behind this rock classic?",
+    src: "audio/Bon Jovi - Livin' On A Prayer_Reveal.mp3",
+    answer: "Bon Jovi",
+    options: ["Bon Jovi", "Aerosmith", "Guns N' Roses", "KISS"]
+  },
+  {
+    type: "audio",
+    question: "Who's the artist of this catchy pop song?",
+    src: "audio/Carly Rae Jepsen - Call Me Maybe_Reveal.mp3",
+    answer: "Carly Rae Jepsen",
+    options: ["Carly Rae Jepsen", "Katy Perry", "Avril Lavigne", "Selena Gomez"]
+  },
+  {
+    type: "audio",
+    question: "Who performs this classic rock tune?",
+    src: "audio/Fleetwood Mac - Go Your Own Way_Reveal.mp3",
+    answer: "Fleetwood Mac",
+    options: ["Fleetwood Mac", "The Eagles", "The Rolling Stones", "The Beatles"]
+  },
+  {
+    type: "audio",
+    question: "Name the artist of this modern hit.",
+    src: "audio/George Ezra - Shotgun_Reveal.mp3",
+    answer: "George Ezra",
+    options: ["George Ezra", "Ed Sheeran", "James Bay", "Sam Fender"]
+  },
+  {
+    type: "audio",
+    question: "Which band performs this iconic Australian track?",
+    src: "audio/Men At Work - Down Under_Reveal.mp3",
+    answer: "Men At Work",
+    options: ["Men At Work", "INXS", "Midnight Oil", "Crowded House"]
+  },
+  {
+    type: "audio",
+    question: "Who sings this party anthem?",
+    src: "audio/Pink - Get The Party Started_Reveal.mp3",
+    answer: "Pink",
+    options: ["Pink", "Lady Gaga", "Avril Lavigne", "Christina Aguilera"]
   }
 ];
 
