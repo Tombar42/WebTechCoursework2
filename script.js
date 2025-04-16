@@ -75,6 +75,7 @@ const questions = [
 let currentQuestionIndex = 0;
 let score = 0;
 let playerName = '';
+let currentTimeout; // To store the ID of the current timeout
 
 const questionElement = document.getElementById('question');
 const answersElement = document.getElementById('answers');
@@ -82,6 +83,7 @@ const nextButton = document.getElementById('next-btn');
 const currentScoreElement = document.getElementById('current-score');
 const leaderboardDisplay = document.getElementById('leaderboard-display');
 const backButton = document.getElementById('back-btn');
+const audioPlayer = document.getElementById('audioPlayer'); // Get the audio player element
 
 // Prompt for player name at the start of the quiz
 function startQuiz() {
@@ -96,8 +98,11 @@ function showQuestion(question) {
   questionElement.innerText = question.question;
   answersElement.innerHTML = '';
 
-  const audioPlayer = document.getElementById('audioPlayer');
-  let currentTimeout; // To store the ID of the current timeout
+  // Clear any existing timeout
+  if (currentTimeout) {
+    clearTimeout(currentTimeout);
+    currentTimeout = null;
+  }
 
   if (question.src) {
     audioPlayer.src = question.src;
@@ -118,21 +123,15 @@ function showQuestion(question) {
     audioPlayer.style.display = 'none';
     audioPlayer.pause();
     audioPlayer.removeAttribute('src');
-    // Optionally clear any existing timeout even if there's no new audio
-    
+  }
 
-  // Show answer options
+  // Show answer options (moved outside the if/else block)
   question.options.forEach(option => {
     const button = document.createElement('button');
     button.innerText = option;
     button.classList.add('btn');
     button.addEventListener('click', () => selectAnswer(option));
     answersElement.appendChild(button);
-}
-    if (currentTimeout) {
-      clearTimeout(currentTimeout);
-    
-  }
   });
 }
 
@@ -148,6 +147,18 @@ function selectAnswer(selectedOption) {
 
   // Update the score display
   currentScoreElement.innerText = score;
+
+  // Stop the audio and clear the timeout when an answer is selected
+  if (audioPlayer.src) {
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0;
+    audioPlayer.removeAttribute('src');
+    audioPlayer.style.display = 'none';
+  }
+  if (currentTimeout) {
+    clearTimeout(currentTimeout);
+    currentTimeout = null;
+  }
 
   nextButton.style.display = 'block';
 }
