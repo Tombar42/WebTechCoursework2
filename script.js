@@ -108,14 +108,15 @@ function showQuestion(question) {
     setTimeout(() => {
       audioPlayer.pause();
       audioPlayer.currentTime = 0;
-      audioPlayer.removeAttribute('src');  // Removes the source so it can't be played again
-      audioPlayer.style.display = 'none';  // Optionally hide the audio player
+      audioPlayer.removeAttribute('src');  // Remove the source to prevent replaying
+      audioPlayer.style.display = 'none';  // Hide the audio player
+      audioPlayer.disabled = true;  // Disable the player to prevent future play
     }, 10000); // 10000 milliseconds = 10 seconds
   } else {
     audioPlayer.style.display = 'none';
     audioPlayer.pause();
     audioPlayer.removeAttribute('src');
-}
+  }
 
 
   // Show answer options
