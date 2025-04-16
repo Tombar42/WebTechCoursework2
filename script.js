@@ -1,49 +1,49 @@
 const questions = [
   {
     type: "audio",
-    question: "Identify the iconic group behind the timeless hit 'Waterloo'.",
+    question: "Whats the name of the iconic group behind the timeless hit 'Waterloo'.",
     src: "Abba - Waterloo_Reveal.mp3",
     answer: "ABBA",
     options: ["Ace of Base", "Queen", "ABBA", "Bananarama"]
   },
   {
     type: "audio",
-    question: "Can you name the boy band that sang the energetic track 'Everybody'?",
+    question: "Can you name the boy band that sang the track 'Everybody'?",
     src: "Backstreet boys - Everybody_Reveal.mp3",
     answer: "Backstreet Boys",
     options: ["Boyz II Men", "NSYNC", "One Direction", "Backstreet Boys"]
   },
   {
     type: "audio",
-    question: "Recognize the artist who serenaded us with 'Uptown Girl'.",
+    question: "who serenaded us with 'Uptown Girl'.",
     src: "Billy Joel - Uptown Girl_Reveal.mp3",
     answer: "Billy Joel",
     options: ["Elton John", "Billy Joel", "Lionel Richie", "George Michael"]
   },
   {
     type: "audio",
-    question: "Which legendary rock act delivered the powerful anthem 'Livin' On A Prayer'?",
+    question: "Which legendary rock act delivered the anthem 'Livin' On A Prayer'?",
     src: "Bon Jovi - Livin' On A Prayer_Reveal.mp3",
     answer: "Bon Jovi",
     options: ["Bruce Springsteen", "Bon Jovi", "Bryan Adams", "Jon Bonham"]
   },
   {
     type: "audio",
-    question: "Pinpoint the singer responsible for the catchy pop sensation 'Call Me Maybe'.",
+    question: "who was the singer responsible for the catchy pop sensation 'Call Me Maybe'.",
     src: "Carly Rae Jepsen - Call Me Maybe_Reveal.mp3",
     answer: "Carly Rae Jepsen",
     options: ["Taylor Swift", "Katy Perry", "Carly Rae Jepsen", "Selena Gomez"]
   },
   {
     type: "audio",
-    question: "Determine the acclaimed band that gifted us the poignant track 'Go Your Own Way'.",
+    question: "which band gifted us the track 'Go Your Own Way'.",
     src: "Fleetwood Mac - Go Your Own Way_Reveal.mp3",
     answer: "Fleetwood Mac",
     options: ["Fleetwood Mac", "The Eagles", "Journey", "Chicago"]
   },
   {
     type: "audio",
-    question: "Identify the voice behind the upbeat hit 'Shotgun'.",
+    question: "who's voice is behind the upbeat hit 'Shotgun'.",
     src: "George Ezra - Shotgun_Reveal.mp3",
     answer: "George Ezra",
     options: ["Ed Sheeran", "George Ezra", "James Blunt", "Tom Walker"]
@@ -64,7 +64,7 @@ const questions = [
   },
   {
     type: "audio",
-    question: "Recognize the group that encouraged us to believe in 'We Built This City'.",
+    question: "Who sung the song 'We Built This City'.",
     src: "Starship - We Built This City_Reveal.mp3",
     answer: "Starship",
     options: ["Journey", "REO Speedwagon", "Starship", "Foreigner"]
