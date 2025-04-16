@@ -101,6 +101,22 @@
     <p>Coming soon...</p>
   </div>
 </div>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const leaderboardList = document.getElementById("score-list");
+    const savedScores = JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+    if (leaderboardList && savedScores.length > 0) {
+      savedScores.slice(0, 5).forEach(score => {
+        const li = document.createElement("li");
+        li.textContent = `${score.name}: ${score.score}`;
+        leaderboardList.appendChild(li);
+      });
+    } else if (leaderboardList) {
+      leaderboardList.innerHTML = "<li>No scores yet. Play the quiz!</li>";
+    }
+  });
+</script>
 </body>
 </html>
 
