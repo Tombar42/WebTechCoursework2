@@ -23,24 +23,19 @@
     </div>
   </div>
   <script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const scoreList = document.getElementById('score-list');
-    if (!scoreList) return;
+    // Get saved scores from localStorage
+    const scores = JSON.parse(localStorage.getItem('leaderboard')) || [];
 
-    const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+    // Sort scores (high to low)
+    scores.sort((a, b) => b.score - a.score);
 
-    if (leaderboard.length === 0) {
-      scoreList.innerHTML = "<li>No scores yet. Be the first to play!</li>";
-      return;
-    }
-
-    leaderboard.slice(0, 10).forEach(entry => {
-      const listItem = document.createElement('li');
-      listItem.textContent = `${entry.name}: ${entry.score}`;
-      scoreList.appendChild(listItem);
+    // Display top 5 scores
+    const list = document.getElementById('leaderboard');
+    scores.slice(0, 5).forEach((entry) => {
+      const li = document.createElement('li');
+      li.textContent = `${entry.name}: ${entry.score}`;
+      list.appendChild(li);
     });
-  });
-</script>
+  </script>
 </body>
 </html>
