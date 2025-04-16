@@ -111,7 +111,7 @@ function showQuestion(question) {
       audioPlayer.removeAttribute('src');  // Remove the source to prevent replaying
       audioPlayer.style.display = 'none';  // Hide the audio player
       audioPlayer.disabled = true;  // Disable the player to prevent future play
-    }, 10000); // 10000 milliseconds = 10 seconds
+    }, 10500); // 10000 milliseconds = 10 seconds
   } else {
     audioPlayer.style.display = 'none';
     audioPlayer.pause();
