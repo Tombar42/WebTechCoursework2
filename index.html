@@ -23,11 +23,5 @@
     </div>
   </div>
   <script>
-  function saveScoreToLeaderboard(name, score) {
-    const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
-    leaderboard.push({ name, score });
-    leaderboard.sort((a, b) => b.score - a.score); // Sort scores from highest to lowest
-    localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
-}
 </body>
 </html>
