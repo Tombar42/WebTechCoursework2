@@ -124,10 +124,7 @@ function showQuestion(question) {
     audioPlayer.pause();
     audioPlayer.removeAttribute('src');
     // Optionally clear any existing timeout even if there's no new audio
-    if (currentTimeout) {
-      clearTimeout(currentTimeout);
-    }
-  }
+    
 
   // Show answer options
   question.options.forEach(option => {
@@ -136,6 +133,11 @@ function showQuestion(question) {
     button.classList.add('btn');
     button.addEventListener('click', () => selectAnswer(option));
     answersElement.appendChild(button);
+
+    if (currentTimeout) {
+      clearTimeout(currentTimeout);
+    }
+  }
   });
 }
 
