@@ -40,34 +40,4 @@
     <audio id="audioPlayer" preload="metadata"></audio>
   </div>
 
-  <script>
-    async function searchAndPlaySnippet() {
-      const query = document.getElementById('searchInput').value.trim();
-      if (!query) return;
-
-      const url = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&output=jsonp&limit=1`;
-      const callbackName = "deezerCallback_" + Math.random().toString(36).substring(7);
-      const script = document.createElement('script');
-      script.src = url + `&callback=${callbackName}`;
-
-      window[callbackName] = function(data) {
-        if (!data.data || data.data.length === 0) {
-          document.getElementById('trackInfo').innerHTML = '<p>No results found.</p>';
-          return;
-        }
-
-        const track = data.data[0];
-        const audio = document.getElementById('audioPlayer');
-        const infoDiv = document.getElementById('trackInfo');
-
-        infoDiv.innerHTML = `
-          <h2>${track.title}</h2>
-          <p>by ${track.artist.name}</p>
-          <img src="${track.album.cover_medium}" width="200" style="border-radius: 10px;" />
-        `;
-
-        audio.src = track.preview;
-        audio.currentTime = 0;
-        audio.play();
-
-        setTimeout(() => {
+ 
