@@ -164,8 +164,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     function showResults() {
         quizContainer.style.display = 'none';
         resultsContainer.style.display = 'block';
-        scoreElement.innerText = score;
-        musicResultsElement.innerHTML = tracks.map(track => `<li>"${track.name}" by ${track.artists[0].name}</li>`).join('');
+        scoreElement.innerText = score;   
+         totalQuestions.innerText = tracks.length;
+    musicResultsElement.innerHTML = tracks.map(track => `<li>"${track.name}" by ${track.artists[0].name}</li>`).join('');
+
+    // Prompt for name and save score
+    const name = prompt("Enter your name for the leaderboard:");
+    if (name) {
+        saveScoreToLeaderboard(name, score);
+    }
     }
 
     function restartQuiz() {
@@ -186,3 +193,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         answersElement.innerHTML = '';
     }
 });
+function saveScoreToLeaderboard(name, score) {
+    const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+    leaderboard.push({ name, score });
+    leaderboard.sort((a, b) => b.score - a.score); // Sort scores from highest to lowest
+    localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+}
+
