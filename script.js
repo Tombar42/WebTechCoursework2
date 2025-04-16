@@ -103,6 +103,12 @@ function showQuestion(question) {
     audioPlayer.style.display = 'block';
     audioPlayer.currentTime = 0;
     audioPlayer.play();
+
+      // Stop the audio after 10 seconds
+    setTimeout(() => {
+      audioPlayer.pause();
+    }, 10000); // 10000 milliseconds = 10 seconds
+    
   } else {
     audioPlayer.style.display = 'none';
     audioPlayer.pause();
