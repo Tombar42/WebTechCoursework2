@@ -4,14 +4,14 @@ const questions = [
     question: "Which band performs this classic pop anthem?",
     src: "Abba - Waterloo_Reveal.mp3",
     answer: "ABBA",
-    options: ["ABBA", "Queen", "Ace of Base", "Bananarama"]
+    options: ["Ace of Base", "Queen", "ABBA", "Bananarama"]
   },
   {
     type: "audio",
     question: "Who's the boy band behind this hit?",
     src: "Backstreet boys - Everybody_Reveal.mp3",
     answer: "Backstreet Boys",
-    options: ["Backstreet Boys", "NSYNC", "One Direction", "Boyz II Men"]
+    options: ["Boyz II Men", "NSYNC", "One Direction", "Backstreet Boys"]
   },
   {
     type: "audio",
@@ -25,14 +25,14 @@ const questions = [
     question: "Who’s the artist behind this timeless pop track?",
     src: "Madonna - Like A Prayer_Reveal.mp3",
     answer: "Madonna",
-    options: ["Madonna", "Cyndi Lauper", "Whitney Houston", "Janet Jackson"]
+    options: ["Cyndi Lauper", "Madonna", "Whitney Houston", "Janet Jackson"]
   },
   {
     type: "audio",
     question: "Which artist is singing this R&B jam?",
     src: "Usher - Yeah_Reveal.mp3",
     answer: "Usher",
-    options: ["Usher", "Chris Brown", "R. Kelly", "Ne-Yo"]
+    options: ["Ne-Yo", "Chris Brown", "R. Kelly", "Usher"]
   },
   {
     type: "audio",
@@ -46,31 +46,31 @@ const questions = [
     question: "Who's singing this hit track from the 2000s?",
     src: "Rihanna - Umbrella_Reveal.mp3",
     answer: "Rihanna",
-    options: ["Rihanna", "Beyoncé", "Ciara", "Ashanti"]
+    options: ["Ciara", "Beyoncé", "Rihanna", "Ashanti"]
   },
   {
     type: "audio",
     question: "Which band made this rock anthem?",
     src: "Queen - We Will Rock You_Reveal.mp3",
     answer: "Queen",
-    options: ["Queen", "The Rolling Stones", "The Beatles", "Led Zeppelin"]
+    options: ["The Rolling Stones", "Queen", "The Beatles", "Led Zeppelin"]
   },
   {
     type: "audio",
     question: "Who performs this iconic 90s pop song?",
     src: "Spice Girls - Wannabe_Reveal.mp3",
     answer: "Spice Girls",
-    options: ["Spice Girls", "All Saints", "TLC", "Destiny's Child"]
+    options: ["Destiny's Child", "All Saints", "TLC", "Spice Girls"]
   },
   {
     type: "audio",
     question: "Who's the artist on this rap classic?",
     src: "Eminem - Lose Yourself_Reveal.mp3",
     answer: "Eminem",
-    options: ["Eminem", "Dr. Dre", "50 Cent", "Kanye West"]
+    options: ["50 Cent", "Dr. Dre", "Eminem", "Kanye West"]
   }
 ];
-
+// music from https://quizmasters.biz/
 
 let currentQuestionIndex = 0;
 let score = 0;
