@@ -129,16 +129,6 @@ function showQuestion(question) {
     }
   }
 
-  question.options.forEach(option => {
-    const button = document.createElement('button');
-    button.innerText = option;
-    button.classList.add('btn');
-    button.addEventListener('click', () => selectAnswer(option));
-    answersElement.appendChild(button);
-  });
-}
-
-
   // Show answer options
   question.options.forEach(option => {
     const button = document.createElement('button');
@@ -158,7 +148,7 @@ function selectAnswer(selectedOption) {
   } else {
     alert("Wrong answer!");
   }
-  
+
   // Update the score display
   currentScoreElement.innerText = score;
 
@@ -179,10 +169,10 @@ function showResults() {
   questionElement.innerText = `${playerName}, your score is ${score} out of ${questions.length}.`;
   answersElement.innerHTML = '';
   nextButton.style.display = 'none';
-  
+
   // Save score to local storage
   saveScore(playerName, score);
-  
+
   // Show the leaderboard
   leaderboardDisplay.style.display = 'block';
   displayScores();
@@ -200,9 +190,9 @@ function displayScores() {
   const scoreList = document.getElementById('score-list');
   scoreList.innerHTML = ''; // Clear existing scores
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
-  
+
   console.log("Scores retrieved from local storage:", scores); // Debugging line
-  
+
   scores.forEach((entry) => {
     const li = document.createElement('li');
     li.innerText = `${entry.name}: ${entry.score}`;
@@ -220,9 +210,9 @@ function displayScoresOnMainPage() {
   const scoreList = document.getElementById('score-list');
   scoreList.innerHTML = ''; // Clear existing scores
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
-  
+
   console.log("Scores retrieved for main page:", scores); // Debugging line
-  
+
   scores.forEach((entry) => {
     const li = document.createElement('li');
     li.innerText = `${entry.name}: ${entry.score}`;
