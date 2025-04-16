@@ -159,19 +159,16 @@ function selectAnswer(selectedOption) {
     clearTimeout(currentTimeout);
     currentTimeout = null;
   }
-
-  nextButton.style.display = 'block';
+  // Automatically go to the next question after a short delay
+  setTimeout(() => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+      showQuestion(questions[currentQuestionIndex]);
+    } else {
+      showResults();
+    }
+  }, 1000); // 1 second delay before next question
 }
-
-nextButton.addEventListener('click', () => {
-  currentQuestionIndex++;
-  if (currentQuestionIndex < questions.length) {
-    showQuestion(questions[currentQuestionIndex]);
-    nextButton.style.display = 'none';
-  } else {
-    showResults();
-  }
-});
 
 function showResults() {
   questionElement.innerText = `${playerName}, your score is ${score} out of ${questions.length}.`;
