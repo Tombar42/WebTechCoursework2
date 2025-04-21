@@ -1,41 +1,37 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Music Quiz</title>
-  <link rel="stylesheet" href="Styles.css">
-</head>
-<body>
-  <div class="background-elements">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-  </div>
-  <div class="content">
-    <h1>Music Quiz</h1>
-    <p>Test your music knowledge and climb the leaderboard!</p>
-    <p>Rules: Answer as many questions as you can correctly. The faster, the better!</p>
-    <button class="btn" onclick="window.location.href='quiz.html';">Play</button>
-    <div class="leaderboard">
-      <h2>Leaderboard</h2>
-      <ul id="score-list"></ul>
-    </div>
-  </div>
-  <script>
-    // Get saved scores from localStorage
-    const scores = JSON.parse(localStorage.getItem('leaderboard')) || [];
-
-    // Sort scores (high to low)
-    scores.sort((a, b) => b.score - a.score);
-
-    // Display top 5 scores
-    const list = document.getElementById('leaderboard');
-    scores.slice(0, 5).forEach((entry) => {
-      const li = document.createElement('li');
-      li.textContent = `${entry.name}: ${entry.score}`;
-      list.appendChild(li);
-    });
-  </script>
-</body>
-</html>
+ <head>
+   <meta charset="UTF-8">
+   <meta name="author" content="Thomas Dunbar Johnson">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Music Quiz</title>
+   <link rel="stylesheet" href="styles.css">
+   <script src="includeTOPBAR.js"></script>
+ 
+ </head>
+ <body>
+   <div w3-include-html="navbar.html">
+   </div>
+  
+ <div class="background-elements">
+   <div class="circle"></div>
+   <div class="circle"></div>
+   <div class="circle"></div>
+ </div>
+ <div class="content">
+   <h1>Music Quiz</h1>
+   <p style="font-size: 23px;"> Test your music knowledge and climb the leaderboard!</p>
+   <p style="font-size: 23px;"> Answer as many questions as you can correctly.
+              
+   <button class="btn" onclick="window.location.href='quiz.html';"><i class="fi fi-music-note"></i>Play</button>
+   
+   <div class="leaderboard">
+     <h2>Leaderboard</h2>
+     <ul id="score-list"></ul>
+      </div>
+ </div>
+ <script src="script.js"></script>
+   <script>
+         includeHTML();
+     </script>
+  </body>
+ </html>
