@@ -258,3 +258,4 @@ if (document.getElementById('score-list')) {
 if (document.getElementById('question')) {
   startQuiz();
 }
+});
