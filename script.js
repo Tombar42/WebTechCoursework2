@@ -211,16 +211,18 @@ function displayScores() {
 
 // Display scores on the main page
 function displayScoresOnMainPage() {
-    const scoreList = document.getElementById('score-list');
-    scoreList.innerHTML = ''; // Clear existing scores
-    const scores = JSON.parse(localStorage.getItem('scores')) || [];
-    console.log("Scores retrieved for main page:", scores); // Debugging line
+  console.log("🔁 Running displayScoresOnMainPage()");
+  const scoreList = document.getElementById('score-list');
+  console.log("👀 Found scoreList:", scoreList);
+  const scores = JSON.parse(localStorage.getItem('scores')) || [];
+  console.log("📦 Retrieved scores:", scores);
 
-    scores.forEach((entry) => {
-        const li = document.createElement('li'); // create new list item
-        li.innerText = `${entry.name}: ${entry.score}`; // set name and score of item
-        scoreList.appendChild(li); // append the item to the list
-    });
+  scoreList.innerHTML = '';
+  scores.forEach((entry) => {
+    const li = document.createElement('li');
+    li.innerText = `${entry.name}: ${entry.score}`;
+    scoreList.appendChild(li);
+  });
 }
 
 // Timer functions
@@ -238,11 +240,14 @@ function startTimer() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  console.log("✅ DOMContentLoaded triggered");
+
   const backButton = document.getElementById('back-btn');
-  if(backButton) {
+  if (backButton) {
     backButton.addEventListener('click', () => {
       window.location.href = 'index.html';
     });
+  }
     
 // Call the function to display scores when the main page loads
 if (document.getElementById('score-list')) {
