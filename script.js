@@ -137,14 +137,16 @@ function showQuestion(question) {
   }
 
   // Show answer options (moved outside the if/else block)
-  question.options.forEach(option => {
-    const button = document.createElement('button');
-    button.innerText = option;
-    button.classList.add('btn');
-    button.addEventListener('click', () => selectAnswer(option));
-    answersElement.appendChild(button);
-  });
-}
+  // Shuffle the answer options
+const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+
+shuffledOptions.forEach(option => {
+  const button = document.createElement('button');
+  button.innerText = option;
+  button.classList.add('btn');
+  button.addEventListener('click', () => selectAnswer(option));
+  answersElement.appendChild(button);
+});
 
 
 function selectAnswer(selectedOption) {
