@@ -76,6 +76,8 @@ let currentQuestionIndex = 0;
 let score = 0;
 let playerName = '';
 let currentTimeout; // To store the ID of the current timeout
+let timer; // timer variable
+let timeLeft = 30; // 30 second timer for each question
 
 const questionElement = document.getElementById('question');
 const answersElement = document.getElementById('answers');
@@ -97,6 +99,7 @@ function startQuiz() {
 function showQuestion(question) {
   questionElement.innerText = question.question;
   answersElement.innerHTML = '';
+  startTimer(); // Start the timer for current question
 
   // Clear any existing timeout
   if (currentTimeout) {
@@ -137,6 +140,7 @@ function showQuestion(question) {
 
 
 function selectAnswer(selectedOption) {
+  clearInterval(timer); // Stop the timer
   const currentQuestion = questions[currentQuestionIndex];
   if (selectedOption === currentQuestion.answer) {
     score++;
@@ -186,23 +190,37 @@ function showResults() {
 // Save score to local storage
 function saveScore(name, score) {
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
-  scores.push({ name: name, score: score });
-  localStorage.setItem('scores', JSON.stringify(scores));
+    scores.push({ name: name, score: score });
+    localStorage.setItem('scores', JSON.stringify(scores));
+    console.log("Scores saved:", scores); // Debugging line
 }
 
 // Display scores in the leaderboard
 function displayScores() {
-  const scoreList = document.getElementById('score-list');
-  scoreList.innerHTML = ''; // Clear existing scores
-  const scores = JSON.parse(localStorage.getItem('scores')) || [];
+    const scoreList = document.getElementById('score-list');
+    scoreList.innerHTML = ''; // Clear existing scores
+    const scores = JSON.parse(localStorage.getItem('scores')) || [];
+    console.log("Scores retrieved:", scores); // Debugging line
 
-  console.log("Scores retrieved from local storage:", scores); // Debugging line
+    scores.forEach((entry) => {
+        const li = document.createElement('li');
+        li.innerText = `${entry.name}: ${entry.score}`;
+        scoreList.appendChild(li);
+    });
+}
 
-  scores.forEach((entry) => {
-    const li = document.createElement('li');
-    li.innerText = `${entry.name}: ${entry.score}`;
-    scoreList.appendChild(li);
-  });
+// Display scores on the main page
+function displayScoresOnMainPage() {
+    const scoreList = document.getElementById('score-list');
+    scoreList.innerHTML = ''; // Clear existing scores
+    const scores = JSON.parse(localStorage.getItem('scores')) || [];
+    console.log("Scores retrieved for main page:", scores); // Debugging line
+
+    scores.forEach((entry) => {
+        const li = document.createElement('li');
+        li.innerText = `${entry.name}: ${entry.score}`;
+        scoreList.appendChild(li);
+    });
 }
 
 // Event listener for the back button
@@ -210,24 +228,23 @@ backButton.addEventListener('click', () => {
   window.location.href = 'index.html'; // Redirect to the main page
 });
 
-// Function to display scores on the main page
-function displayScoresOnMainPage() {
-  const scoreList = document.getElementById('score-list');
-  scoreList.innerHTML = ''; // Clear existing scores
-  const scores = JSON.parse(localStorage.getItem('scores')) || [];
-
-  console.log("Scores retrieved for main page:", scores); // Debugging line
-
-  scores.forEach((entry) => {
-    const li = document.createElement('li');
-    li.innerText = `${entry.name}: ${entry.score}`;
-    scoreList.appendChild(li);
-  });
+// Timer functions
+function startTimer() {
+    timeLeft = 30; // Reset timer for each question
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer-display').innerText = `Time Left: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            alert("Time's up!");
+            selectAnswer(""); // Automatically select no answer
+        }
+    }, 1000);
 }
 
 // Call the function to display scores when the main page loads
 if (document.getElementById('score-list')) {
-  displayScoresOnMainPage();
+    displayScoresOnMainPage();
 }
 
 // Start the quiz when the quiz page loads
