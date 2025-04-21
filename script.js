@@ -1,3 +1,4 @@
+
 const questions = [
   {
     type: "audio",
@@ -84,20 +85,27 @@ const answersElement = document.getElementById('answers');
 const nextButton = document.getElementById('next-btn');
 const currentScoreElement = document.getElementById('current-score');
 const leaderboardDisplay = document.getElementById('leaderboard-display');
-const backButton = document.getElementById('back-btn');
 const audioPlayer = document.getElementById('audioPlayer'); // Get the audio player element
 
 // Prompt for player name at the start of the quiz
 function startQuiz() {
-  playerName = prompt("Enter your name:") || "Player";
+  do {
+    playerName = prompt("Enter your name:") || "";
+    playerName = playerName.trim();
+  } while (!playerName);
+
+  // Capitalize first letter only
+  playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1);
+
   currentQuestionIndex = 0;
   score = 0;
   nextButton.style.display = 'none';
   showQuestion(questions[currentQuestionIndex]);
 }
 
+
 function showQuestion(question) {
-  questionElement.innerText = question.question;
+  questionElement.innerText = `Q${currentQuestionIndex + 1} of ${questions.length}: ${question.question}`;
   answersElement.innerHTML = '';
   startTimer(); // Start the timer for current question
 
@@ -190,64 +198,128 @@ function showResults() {
 // Save score to local storage
 function saveScore(name, score) {
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
-    scores.push({ name: name, score: score });
-    localStorage.setItem('scores', JSON.stringify(scores));
-    console.log("Scores saved:", scores); // Debugging line
+
+  const existing = scores.find(entry => entry.name === name);
+
+  if (existing) {
+    if (score > existing.score) {
+      existing.score = score;
+      showPopup("🎉 New High Score!");
+    }
+    // Otherwise, do nothing
+  } else {
+    scores.push({ name, score });
+    showPopup("🎉 Welcome to the leaderboard!");
+  }
+
+  localStorage.setItem('scores', JSON.stringify(scores));
 }
 
 // Display scores in the leaderboard
 function displayScores() {
-    const scoreList = document.getElementById('score-list');
-    scoreList.innerHTML = ''; // Clear existing scores
-    const scores = JSON.parse(localStorage.getItem('scores')) || [];
-    console.log("Scores retrieved:", scores); // Debugging line
+  const scoreList = document.getElementById('score-list');
+  scoreList.innerHTML = '';
 
-    scores.forEach((entry) => {
-        const li = document.createElement('li');
-        li.innerText = `${entry.name}: ${entry.score}`;
-        scoreList.appendChild(li);
+  const scores = JSON.parse(localStorage.getItem('scores')) || [];
+
+  scores
+    .sort((a, b) => b.score - a.score) // Sort highest to lowest
+    .slice(0, 5) // Only show top 5
+    .forEach((entry) => {
+      const li = document.createElement('li');
+      li.innerText = `${entry.name}: ${entry.score}`;
+      scoreList.appendChild(li);
     });
 }
 
 // Display scores on the main page
 function displayScoresOnMainPage() {
-    const scoreList = document.getElementById('score-list');
-    scoreList.innerHTML = ''; // Clear existing scores
-    const scores = JSON.parse(localStorage.getItem('scores')) || [];
-    console.log("Scores retrieved for main page:", scores); // Debugging line
+  const scoreList = document.getElementById('score-list');
+  scoreList.innerHTML = '';
 
-    scores.forEach((entry) => {
-        const li = document.createElement('li'); // create new list item
-        li.innerText = `${entry.name}: ${entry.score}`; // set name and score of item
-        scoreList.appendChild(li); // append the item to the list
+  const scores = JSON.parse(localStorage.getItem('scores')) || [];
+
+  scores
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5)
+    .forEach((entry) => {
+      const li = document.createElement('li');
+      li.innerText = `${entry.name}: ${entry.score}`;
+      scoreList.appendChild(li);
     });
 }
 
-// Event listener for the back button
-backButton.addEventListener('click', () => {
-  window.location.href = 'index.html'; // Redirect to the main page
-});
-
 // Timer functions
 function startTimer() {
-    timeLeft = 30; // Reset timer for each question
-    timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById('timer-display').innerText = `Time Left: ${timeLeft}s`;
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            alert("Time's up!");
-            selectAnswer(""); // Automatically select no answer
-        }
-    }, 1000);
+  timeLeft = 30;
+  const timerBar = document.getElementById('timer-bar');
+
+  timer = setInterval(() => {
+    timeLeft--;
+    document.getElementById('timer-display').innerText = `Time Left: ${timeLeft}s`;
+
+    if (timerBar) {
+      timerBar.style.width = `${(timeLeft / 30) * 100}%`;
+    }
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      alert("Time's up!");
+      selectAnswer(""); // Automatically select no answer
+    }
+  }, 1000);
 }
 
-// Call the function to display scores when the main page loads
-if (document.getElementById('score-list')) {
+function shareScore() {
+  const shareText = `I scored ${score}/${questions.length} on the Music Quiz! 🎶 Try it yourself: ${window.location.href}`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: "Music Quiz",
+      text: shareText,
+      url: window.location.href
+    }).catch(console.error);
+  } else {
+    navigator.clipboard.writeText(shareText)
+      .then(() => alert("📋 Copied to clipboard! Ready to paste anywhere 🎉"))
+      .catch(() => alert("Couldn't copy. Try manually sharing."));
+  }
+}
+
+function resetScores() {
+  if (confirm("Are you sure you want to clear the leaderboard?")) {
+    localStorage.removeItem('scores');
+    displayScoresOnMainPage(); // refresh list
+  }
+}
+
+function showPopup(message) {
+  const popup = document.getElementById('popup');
+  if (!popup) return; // In case it's not on the page
+  popup.innerText = message;
+  popup.style.display = 'block';
+
+  setTimeout(() => {
+    popup.style.display = 'none';
+  }, 3000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("✅ DOMContentLoaded triggered");
+
+  const backButton = document.getElementById('back-btn');
+  if (backButton) {
+    backButton.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  }
+
+  if (document.getElementById('score-list')) {
     displayScoresOnMainPage();
-}
+  }
 
-// Start the quiz when the quiz page loads
-if (document.getElementById('question')) {
-  startQuiz();
-}
+  if (document.getElementById('question')) {
+    startQuiz();
+  }
+});
+
