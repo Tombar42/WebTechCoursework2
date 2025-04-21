@@ -84,6 +84,7 @@ const answersElement = document.getElementById('answers');
 const nextButton = document.getElementById('next-btn');
 const currentScoreElement = document.getElementById('current-score');
 const leaderboardDisplay = document.getElementById('leaderboard-display');
+const backButton = document.getElementById('back-btn');
 const audioPlayer = document.getElementById('audioPlayer'); // Get the audio player element
 
 // Prompt for player name at the start of the quiz
@@ -189,56 +190,43 @@ function showResults() {
 // Save score to local storage
 function saveScore(name, score) {
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
-
-  const existing = scores.find(entry => entry.name === name);
-
-  if (existing) {
-    if (score > existing.score) {
-      existing.score = score;
-      showPopup("🎉 New High Score!");
-    }
-    // Otherwise, do nothing
-  } else {
-    scores.push({ name, score });
-    showPopup("🎉 Welcome to the leaderboard!");
-  }
-
-  localStorage.setItem('scores', JSON.stringify(scores));
+    scores.push({ name: name, score: score });
+    localStorage.setItem('scores', JSON.stringify(scores));
+    console.log("Scores saved:", scores); // Debugging line
 }
 
 // Display scores in the leaderboard
 function displayScores() {
-  const scoreList = document.getElementById('score-list');
-  scoreList.innerHTML = '';
+    const scoreList = document.getElementById('score-list');
+    scoreList.innerHTML = ''; // Clear existing scores
+    const scores = JSON.parse(localStorage.getItem('scores')) || [];
+    console.log("Scores retrieved:", scores); // Debugging line
 
-  const scores = JSON.parse(localStorage.getItem('scores')) || [];
-
-  scores
-    .sort((a, b) => b.score - a.score) // Sort highest to lowest
-    .slice(0, 5) // Only show top 5
-    .forEach((entry) => {
-      const li = document.createElement('li');
-      li.innerText = `${entry.name}: ${entry.score}`;
-      scoreList.appendChild(li);
+    scores.forEach((entry) => {
+        const li = document.createElement('li');
+        li.innerText = `${entry.name}: ${entry.score}`;
+        scoreList.appendChild(li);
     });
 }
 
 // Display scores on the main page
 function displayScoresOnMainPage() {
-  const scoreList = document.getElementById('score-list');
-  scoreList.innerHTML = '';
+    const scoreList = document.getElementById('score-list');
+    scoreList.innerHTML = ''; // Clear existing scores
+    const scores = JSON.parse(localStorage.getItem('scores')) || [];
+    console.log("Scores retrieved for main page:", scores); // Debugging line
 
-  const scores = JSON.parse(localStorage.getItem('scores')) || [];
-
-  scores
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 5)
-    .forEach((entry) => {
-      const li = document.createElement('li');
-      li.innerText = `${entry.name}: ${entry.score}`;
-      scoreList.appendChild(li);
+    scores.forEach((entry) => {
+        const li = document.createElement('li'); // create new list item
+        li.innerText = `${entry.name}: ${entry.score}`; // set name and score of item
+        scoreList.appendChild(li); // append the item to the list
     });
 }
+
+// Event listener for the back button
+backButton.addEventListener('click', () => {
+  window.location.href = 'index.html'; // Redirect to the main page
+});
 
 // Timer functions
 function startTimer() {
@@ -254,33 +242,12 @@ function startTimer() {
     }, 1000);
 }
 
-function showPopup(message) {
-  const popup = document.getElementById('popup');
-  if (!popup) return; // In case it's not on the page
-  popup.innerText = message;
-  popup.style.display = 'block';
-
-  setTimeout(() => {
-    popup.style.display = 'none';
-  }, 3000);
+// Call the function to display scores when the main page loads
+if (document.getElementById('score-list')) {
+    displayScoresOnMainPage();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("✅ DOMContentLoaded triggered");
-
-  const backButton = document.getElementById('back-btn');
-  if (backButton) {
-    backButton.addEventListener('click', () => {
-      window.location.href = 'index.html';
-    });
-  }
-
-  if (document.getElementById('score-list')) {
-    displayScoresOnMainPage();
-  }
-
-  if (document.getElementById('question')) {
-    startQuiz();
-  }
-});
-
+// Start the quiz when the quiz page loads
+if (document.getElementById('question')) {
+  startQuiz();
+}
