@@ -189,39 +189,54 @@ function showResults() {
 // Save score to local storage
 function saveScore(name, score) {
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
-    scores.push({ name: name, score: score });
-    localStorage.setItem('scores', JSON.stringify(scores));
-    console.log("Scores saved:", scores); // Debugging line
+
+  const existing = scores.find(entry => entry.name === name);
+
+  if (existing) {
+    if (score > existing.score) {
+      existing.score = score;
+      showPopup("🎉 New High Score!");
+    }
+    // Otherwise, do nothing
+  } else {
+    scores.push({ name, score });
+    showPopup("🎉 Welcome to the leaderboard!");
+  }
+
+  localStorage.setItem('scores', JSON.stringify(scores));
 }
 
 // Display scores in the leaderboard
 function displayScores() {
-    const scoreList = document.getElementById('score-list');
-    scoreList.innerHTML = ''; // Clear existing scores
-    const scores = JSON.parse(localStorage.getItem('scores')) || [];
-    console.log("Scores retrieved:", scores); // Debugging line
+  const scoreList = document.getElementById('score-list');
+  scoreList.innerHTML = '';
 
-    scores
-      .sort((a, b) => b.score - a.score) // Sort scores descending
-      .forEach((entry) => {
-        const li = document.createElement('li');
-        li.innerText = `${entry.name}: ${entry.score}`;
-        scoreList.appendChild(li);
+  const scores = JSON.parse(localStorage.getItem('scores')) || [];
+
+  scores
+    .sort((a, b) => b.score - a.score) // Sort highest to lowest
+    .slice(0, 5) // Only show top 5
+    .forEach((entry) => {
+      const li = document.createElement('li');
+      li.innerText = `${entry.name}: ${entry.score}`;
+      scoreList.appendChild(li);
     });
 }
+
 // Display scores on the main page
 function displayScoresOnMainPage() {
-    const scoreList = document.getElementById('score-list');
-    scoreList.innerHTML = ''; // Clear existing scores
-    const scores = JSON.parse(localStorage.getItem('scores')) || [];
-    console.log("Scores retrieved for main page:", scores); // Debugging line
+  const scoreList = document.getElementById('score-list');
+  scoreList.innerHTML = '';
 
-    scores
-      .sort((a, b) => b.score - a.score) // Sort scores descending
-      .forEach((entry) => {
-        const li = document.createElement('li');
-        li.innerText = `${entry.name}: ${entry.score}`;
-        scoreList.appendChild(li);
+  const scores = JSON.parse(localStorage.getItem('scores')) || [];
+
+  scores
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5)
+    .forEach((entry) => {
+      const li = document.createElement('li');
+      li.innerText = `${entry.name}: ${entry.score}`;
+      scoreList.appendChild(li);
     });
 }
 
@@ -239,8 +254,19 @@ function startTimer() {
     }, 1000);
 }
 
+function showPopup(message) {
+  const popup = document.getElementById('popup');
+  if (!popup) return; // In case it's not on the page
+  popup.innerText = message;
+  popup.style.display = 'block';
+
+  setTimeout(() => {
+    popup.style.display = 'none';
+  }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  console.log(" DOMContentLoaded triggered");
+  console.log("✅ DOMContentLoaded triggered");
 
   const backButton = document.getElementById('back-btn');
   if (backButton) {
