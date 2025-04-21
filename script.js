@@ -217,9 +217,9 @@ function displayScoresOnMainPage() {
     console.log("Scores retrieved for main page:", scores); // Debugging line
 
     scores.forEach((entry) => {
-        const li = document.createElement('li');
-        li.innerText = `${entry.name}: ${entry.score}`;
-        scoreList.appendChild(li);
+        const li = document.createElement('li'); // create new list item
+        li.innerText = `${entry.name}: ${entry.score}`; // set name and score of item
+        scoreList.appendChild(li); // append the item to the list
     });
 }
 
