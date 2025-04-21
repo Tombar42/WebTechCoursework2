@@ -84,7 +84,6 @@ const answersElement = document.getElementById('answers');
 const nextButton = document.getElementById('next-btn');
 const currentScoreElement = document.getElementById('current-score');
 const leaderboardDisplay = document.getElementById('leaderboard-display');
-const backButton = document.getElementById('back-btn');
 const audioPlayer = document.getElementById('audioPlayer'); // Get the audio player element
 
 // Prompt for player name at the start of the quiz
@@ -248,14 +247,13 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.href = 'index.html';
     });
   }
-    
-// Call the function to display scores when the main page loads
-if (document.getElementById('score-list')) {
-    displayScoresOnMainPage();
-}
 
-// Start the quiz when the quiz page loads
-if (document.getElementById('question')) {
-  startQuiz();
-}
+  if (document.getElementById('score-list')) {
+    displayScoresOnMainPage();
+  }
+
+  if (document.getElementById('question')) {
+    startQuiz();
+  }
 });
+
