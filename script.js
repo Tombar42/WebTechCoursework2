@@ -238,7 +238,7 @@ function startTimer() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const backBtton = document.getElementById('back-btn');
+  const backButton = document.getElementById('back-btn');
   if(backButton) {
     backButton.addEventListener('click', () => {
       window.location.href = 'index.html';
