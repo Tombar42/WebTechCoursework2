@@ -201,27 +201,28 @@ function displayScores() {
     const scores = JSON.parse(localStorage.getItem('scores')) || [];
     console.log("Scores retrieved:", scores); // Debugging line
 
-    scores.forEach((entry) => {
+    scores
+      .sort((a, b) => b.score - a.score) // Sort scores descending
+      .forEach((entry) => {
         const li = document.createElement('li');
         li.innerText = `${entry.name}: ${entry.score}`;
         scoreList.appendChild(li);
     });
 }
-
 // Display scores on the main page
 function displayScoresOnMainPage() {
-  console.log("🔁 Running displayScoresOnMainPage()");
-  const scoreList = document.getElementById('score-list');
-  console.log("👀 Found scoreList:", scoreList);
-  const scores = JSON.parse(localStorage.getItem('scores')) || [];
-  console.log("📦 Retrieved scores:", scores);
+    const scoreList = document.getElementById('score-list');
+    scoreList.innerHTML = ''; // Clear existing scores
+    const scores = JSON.parse(localStorage.getItem('scores')) || [];
+    console.log("Scores retrieved for main page:", scores); // Debugging line
 
-  scoreList.innerHTML = '';
-  scores.forEach((entry) => {
-    const li = document.createElement('li');
-    li.innerText = `${entry.name}: ${entry.score}`;
-    scoreList.appendChild(li);
-  });
+    scores
+      .sort((a, b) => b.score - a.score) // Sort scores descending
+      .forEach((entry) => {
+        const li = document.createElement('li');
+        li.innerText = `${entry.name}: ${entry.score}`;
+        scoreList.appendChild(li);
+    });
 }
 
 // Timer functions
@@ -239,7 +240,7 @@ function startTimer() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("✅ DOMContentLoaded triggered");
+  console.log(" DOMContentLoaded triggered");
 
   const backButton = document.getElementById('back-btn');
   if (backButton) {
