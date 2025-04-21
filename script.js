@@ -223,11 +223,6 @@ function displayScoresOnMainPage() {
     });
 }
 
-// Event listener for the back button
-backButton.addEventListener('click', () => {
-  window.location.href = 'index.html'; // Redirect to the main page
-});
-
 // Timer functions
 function startTimer() {
     timeLeft = 30; // Reset timer for each question
@@ -242,6 +237,13 @@ function startTimer() {
     }, 1000);
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const backBtton = document.getElementById('back-btn');
+  if(backButton) {
+    backButton.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+    
 // Call the function to display scores when the main page loads
 if (document.getElementById('score-list')) {
     displayScoresOnMainPage();
