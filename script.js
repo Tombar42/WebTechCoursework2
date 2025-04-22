@@ -255,26 +255,35 @@ function displayScoresOnMainPage() {
 function startTimer() {
   timeLeft = 10;
   const timerBar = document.getElementById('timer-bar');
+  const timerDisplay = document.getElementById('timer-display');
+
+  // Initial display
+  timerDisplay.innerText = `Time Left: ${timeLeft}s`;
+  if (timerBar) {
+    timerBar.style.width = '100%';
+  }
 
   timer = setInterval(() => {
     timeLeft--;
-    document.getElementById('timer-display').innerText = `Time Left: ${timeLeft}s`;
 
-    if (timerBar) {
-      timerBar.style.width = `${(timeLeft / 10) * 100}%`;
+    if (timeLeft >= 0) {
+      timerDisplay.innerText = `Time Left: ${timeLeft}s`;
+      if (timerBar) {
+        timerBar.style.width = `${(timeLeft / 10) * 100}%`;
+      }
     }
 
-    if (timeLeft <= 0) {
+    if (timeLeft < 0) {
       clearInterval(timer);
-
-      // Keep 0s on screen for 1 full second before advancing
+      // Let 0 stay on screen for 1 second, THEN call selectAnswer
       setTimeout(() => {
         alert("Time's up!");
-        selectAnswer(""); // Automatically select no answer
+        selectAnswer("");
       }, 1000);
     }
   }, 1000);
 }
+
 
 function shareScore() {
   const shareText = `I scored ${score}/${questions.length} on the Music Quiz! 🎶 Try it yourself: ${window.location.href}`;
