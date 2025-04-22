@@ -253,40 +253,43 @@ function displayScoresOnMainPage() {
 
 // Timer functions
 function startTimer() {
-  const DISPLAY_TIME = 10;      // What the user sees
-  const ACTUAL_TIME = 11;       // Real time the script uses
-
+  const DISPLAY_TIME = 10; // Display counts from 10
   timeLeft = DISPLAY_TIME;
-  const timerBar = document.getElementById('timer-bar');
 
-  // Update display immediately
-  document.getElementById('timer-display').innerText = `Time Left: ${timeLeft}s`;
+  const timerBar = document.getElementById('timer-bar');
+  const timerDisplay = document.getElementById('timer-display');
+
+  // Set initial display
+  if (timerDisplay) {
+    timerDisplay.innerText = `Time Left: ${timeLeft}s`;
+  }
   if (timerBar) {
-    timerBar.style.width = `100%`;
+    timerBar.style.width = '100%';
   }
 
-  let tick = ACTUAL_TIME;
+  let tick = 0;
 
   timer = setInterval(() => {
-    tick--;
+    tick++;
+    timeLeft--;
 
-    // Update visible countdown and progress bar only for the first 10 seconds
-    if (tick <= DISPLAY_TIME) {
-      timeLeft = tick;
-      document.getElementById('timer-display').innerText = `Time Left: ${timeLeft}s`;
-      if (timerBar) {
-        timerBar.style.width = `${(timeLeft / DISPLAY_TIME) * 100}%`;
-      }
+    if (timerDisplay && timeLeft >= 0) {
+      timerDisplay.innerText = `Time Left: ${timeLeft}s`;
     }
 
-    // When timer hits 0, trigger the end
-    if (tick <= 0) {
+    if (timerBar && timeLeft >= 0) {
+      timerBar.style.width = `${(timeLeft / DISPLAY_TIME) * 100}%`;
+    }
+
+    if (tick === 11) { // wait 11 real seconds
       clearInterval(timer);
       alert("Time's up!");
-      selectAnswer(""); // Automatically select no answer
+      selectAnswer(""); // Auto-select if no answer
     }
+
   }, 1000);
 }
+
 
 function shareScore() {
   const shareText = `I scored ${score}/${questions.length} on the Music Quiz! 🎶 Try it yourself: ${window.location.href}`;
