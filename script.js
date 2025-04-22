@@ -107,39 +107,6 @@ function startQuiz() {
 function showQuestion(question) {
   questionElement.innerText = `Q${currentQuestionIndex + 1} of ${questions.length}: ${question.question}`;
   answersElement.innerHTML = '';
-  startTimer(); // Start the timer for current question
-
-  // Clear any existing timeout
-  if (currentTimeout) {
-    clearTimeout(currentTimeout);
-    currentTimeout = null;
-  }
-
-  if (question.src) {
-    audioPlayer.src = question.src;
-    audioPlayer.style.display = 'block';
-    audioPlayer.currentTime = 0;
-    audioPlayer.play();
-
-    // Set the timeout for the current question
-    currentTimeout = setTimeout(() => {
-      audioPlayer.pause();
-      audioPlayer.currentTime = 0;
-      audioPlayer.removeAttribute('src');
-      audioPlayer.style.display = 'none';
-      audioPlayer.disabled = true;
-    }, 10500); // 10.5 seconds to ensure it stops after 10 seconds of playback
-
-  } else {
-    audioPlayer.style.display = 'none';
-    audioPlayer.pause();
-    audioPlayer.removeAttribute('src');
-  }
-
-  // Show answer options (moved outside the if/else block)
-function showQuestion(question) {
-  questionElement.innerText = `Q${currentQuestionIndex + 1} of ${questions.length}: ${question.question}`;
-  answersElement.innerHTML = '';
   startTimer();
 
   if (currentTimeout) {
@@ -173,7 +140,7 @@ function showQuestion(question) {
     const button = document.createElement('button');
     button.innerText = option;
     button.classList.add('btn');
-    button.addEventListener('click', () => selectAnswer(option)); // This is key
+    button.addEventListener('click', () => selectAnswer(option));
     answersElement.appendChild(button);
   });
 }
