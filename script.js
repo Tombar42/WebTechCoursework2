@@ -138,7 +138,7 @@ function showQuestion(question) {
 
   // Show answer options (moved outside the if/else block)
   // Shuffle the answer options
-const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+const shuffledOptions = shuffleArray(question.options);
 
 shuffledOptions.forEach(option => {
   const button = document.createElement('button');
@@ -158,6 +158,15 @@ function selectAnswer(selectedOption) {
   } else {
     alert("Wrong answer!");
   }
+
+  function shuffleArray(array) {
+  const shuffled = [...array]; // create a copy
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
   // Update the score display
   currentScoreElement.innerText = score;
