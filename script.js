@@ -148,9 +148,12 @@ shuffledOptions.forEach(option => {
 
 }
 
-
 function selectAnswer(selectedOption) {
-  clearInterval(timer); // Stop the timer
+  if (answered) return;
+  answered = true;
+
+  clearInterval(timer);
+
   const currentQuestion = questions[currentQuestionIndex];
   if (selectedOption === currentQuestion.answer) {
     score++;
@@ -158,7 +161,7 @@ function selectAnswer(selectedOption) {
   } else {
     alert("Wrong answer!");
   }
-
+  
   // Update the score display
   currentScoreElement.innerText = score;
 
@@ -253,19 +256,14 @@ function displayScoresOnMainPage() {
 
 // Timer functions
 function startTimer() {
-  const DISPLAY_TIME = 10; // Display counts from 10
+  const DISPLAY_TIME = 10;
   timeLeft = DISPLAY_TIME;
 
   const timerBar = document.getElementById('timer-bar');
   const timerDisplay = document.getElementById('timer-display');
 
-  // Set initial display
-  if (timerDisplay) {
-    timerDisplay.innerText = `Time Left: ${timeLeft}s`;
-  }
-  if (timerBar) {
-    timerBar.style.width = '100%';
-  }
+  if (timerDisplay) timerDisplay.innerText = `Time Left: ${timeLeft}s`;
+  if (timerBar) timerBar.style.width = '100%';
 
   let tick = 0;
 
@@ -273,23 +271,18 @@ function startTimer() {
     tick++;
     timeLeft--;
 
-    if (timerDisplay && timeLeft >= 0) {
-      timerDisplay.innerText = `Time Left: ${timeLeft}s`;
+    if (timeLeft >= 0) {
+      if (timerDisplay) timerDisplay.innerText = `Time Left: ${timeLeft}s`;
+      if (timerBar) timerBar.style.width = `${(timeLeft / DISPLAY_TIME) * 100}%`;
     }
 
-    if (timerBar && timeLeft >= 0) {
-      timerBar.style.width = `${(timeLeft / DISPLAY_TIME) * 100}%`;
-    }
-
-    if (tick === 11) { // wait 11 real seconds
+    if (tick === 11) {
       clearInterval(timer);
       alert("Time's up!");
-      selectAnswer(""); // Auto-select if no answer
+      selectAnswer("");
     }
-
   }, 1000);
 }
-
 
 function shareScore() {
   const shareText = `I scored ${score}/${questions.length} on the Music Quiz! 🎶 Try it yourself: ${window.location.href}`;
