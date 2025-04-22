@@ -147,7 +147,6 @@ shuffledOptions.forEach(option => {
 });
 
 }
-
 function selectAnswer(selectedOption) {
   if (answered) return;
   answered = true;
@@ -161,8 +160,32 @@ function selectAnswer(selectedOption) {
   } else {
     alert("Wrong answer!");
   }
- }, 1000);
+
+  currentScoreElement.innerText = score;
+
+  if (audioPlayer.src) {
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0;
+    audioPlayer.removeAttribute('src');
+    audioPlayer.style.display = 'none';
+  }
+
+  if (currentTimeout) {
+    clearTimeout(currentTimeout);
+    currentTimeout = null;
+  }
+
+  
+  setTimeout(() => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+      showQuestion(questions[currentQuestionIndex]);
+    } else {
+      showResults();
+    }
+  }, 1000); 
 }
+
   
   // Update the score display
   currentScoreElement.innerText = score;
