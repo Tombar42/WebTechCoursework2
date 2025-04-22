@@ -266,8 +266,12 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timer);
-      alert("Time's up!");
-      selectAnswer(""); // Automatically select no answer
+
+      // Keep 0s on screen for 1 full second before advancing
+      setTimeout(() => {
+        alert("Time's up!");
+        selectAnswer(""); // Automatically select no answer
+      }, 1000);
     }
   }, 1000);
 }
