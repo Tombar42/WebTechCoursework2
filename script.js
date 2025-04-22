@@ -316,7 +316,7 @@ function showPopup(message) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log(" DOMContentLoaded triggered");
+  console.log("DOMContentLoaded triggered");
 
   const backButton = document.getElementById('back-btn');
   if (backButton) {
