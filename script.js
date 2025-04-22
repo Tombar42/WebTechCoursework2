@@ -318,6 +318,12 @@ function showPopup(message) {
 document.addEventListener('DOMContentLoaded', () => {
   console.log("DOMContentLoaded triggered");
 
+  // Include the navbar
+  if (typeof includeHTML === "function") {
+    includeHTML();
+  }
+
+  // Back to Main Page button
   const backButton = document.getElementById('back-btn');
   if (backButton) {
     backButton.addEventListener('click', () => {
@@ -325,12 +331,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (document.getElementById('score-list')) {
-    displayScoresOnMainPage();
+  // Share button
+  const shareButton = document.getElementById('share-btn');
+  if (shareButton) {
+    shareButton.addEventListener('click', shareScore);
   }
 
+  // If on the quiz page, start the quiz
   if (document.getElementById('question')) {
     startQuiz();
   }
+
+  // If on the main page, display scores
+  if (document.getElementById('score-list') && !document.getElementById('question')) {
+    displayScoresOnMainPage();
+  }
 });
+
 
