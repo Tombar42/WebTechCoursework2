@@ -161,6 +161,7 @@ function selectAnswer(selectedOption) {
   } else {
     alert("Wrong answer!");
   }
+}
   
   // Update the score display
   currentScoreElement.innerText = score;
