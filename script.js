@@ -161,6 +161,7 @@ function selectAnswer(selectedOption) {
   } else {
     alert("Wrong answer!");
   }
+ }, 1000);
 }
   
   // Update the score display
