@@ -137,16 +137,46 @@ function showQuestion(question) {
   }
 
   // Show answer options (moved outside the if/else block)
-  // Shuffle the answer options
-const shuffledOptions = shuffleArray(question.options);
+function showQuestion(question) {
+  questionElement.innerText = `Q${currentQuestionIndex + 1} of ${questions.length}: ${question.question}`;
+  answersElement.innerHTML = '';
+  startTimer();
 
-shuffledOptions.forEach(option => {
-  const button = document.createElement('button');
-  button.innerText = option;
-  button.classList.add('btn');
-  button.addEventListener('click', () => selectAnswer(option));
-  answersElement.appendChild(button);
-});
+  if (currentTimeout) {
+    clearTimeout(currentTimeout);
+    currentTimeout = null;
+  }
+
+  if (question.src) {
+    audioPlayer.src = question.src;
+    audioPlayer.style.display = 'block';
+    audioPlayer.currentTime = 0;
+    audioPlayer.play();
+
+    currentTimeout = setTimeout(() => {
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      audioPlayer.removeAttribute('src');
+      audioPlayer.style.display = 'none';
+      audioPlayer.disabled = true;
+    }, 10500);
+  } else {
+    audioPlayer.style.display = 'none';
+    audioPlayer.pause();
+    audioPlayer.removeAttribute('src');
+  }
+
+  // ✅ Shuffle and display answers
+  const shuffledOptions = shuffleArray(question.options);
+
+  shuffledOptions.forEach(option => {
+    const button = document.createElement('button');
+    button.innerText = option;
+    button.classList.add('btn');
+    button.addEventListener('click', () => selectAnswer(option)); // This is key
+    answersElement.appendChild(button);
+  });
+}
 
 
 function selectAnswer(selectedOption) {
