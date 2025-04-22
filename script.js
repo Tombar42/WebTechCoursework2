@@ -107,7 +107,7 @@ function startQuiz() {
 function showQuestion(question) {
   questionElement.innerText = `Q${currentQuestionIndex + 1} of ${questions.length}: ${question.question}`;
   answersElement.innerHTML = '';
-  startTimer(); // Start the timer for current question
+  start(); // Start the timer for current question
 
   // Clear any existing timeout
   if (currentTimeout) {
@@ -253,7 +253,7 @@ function displayScoresOnMainPage() {
 
 // Timer functions
 function startTimer() {
-  timeLeft = 30;
+  timeLeft = 10;
   const timerBar = document.getElementById('timer-bar');
 
   timer = setInterval(() => {
@@ -261,7 +261,7 @@ function startTimer() {
     document.getElementById('timer-display').innerText = `Time Left: ${timeLeft}s`;
 
     if (timerBar) {
-      timerBar.style.width = `${(timeLeft / 30) * 100}%`;
+      timerBar.style.width = `${(timeLeft / 10) * 100}%`;
     }
 
     if (timeLeft <= 0) {
@@ -316,7 +316,7 @@ function showPopup(message) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("✅ DOMContentLoaded triggered");
+  console.log(" DOMContentLoaded triggered");
 
   const backButton = document.getElementById('back-btn');
   if (backButton) {
