@@ -107,7 +107,7 @@ function startQuiz() {
 function showQuestion(question) {
   questionElement.innerText = `Q${currentQuestionIndex + 1} of ${questions.length}: ${question.question}`;
   answersElement.innerHTML = '';
-  start(); // Start the timer for current question
+  startTimer(); // Start the timer for current question
 
   // Clear any existing timeout
   if (currentTimeout) {
