@@ -78,7 +78,7 @@ let score = 0;
 let playerName = '';
 let currentTimeout; // To store the ID of the current timeout
 let timer; // timer variable
-let timeLeft = 30; // 30 second timer for each question
+let timeLeft = 10; // 10 second timer for each question
 
 const questionElement = document.getElementById('question');
 const answersElement = document.getElementById('answers');
