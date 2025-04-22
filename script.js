@@ -181,7 +181,7 @@ function selectAnswer(selectedOption) {
     } else {
       showResults();
     }
-  }, 1000); // 1 second delay before next question
+  }, 500); // 1 second delay before next question
 }
 
 function showResults() {
