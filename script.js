@@ -253,18 +253,34 @@ function displayScoresOnMainPage() {
 
 // Timer functions
 function startTimer() {
-  timeLeft = 10;
+  const DISPLAY_TIME = 10;      // What the user sees
+  const ACTUAL_TIME = 11;       // Real time the script uses
+
+  timeLeft = DISPLAY_TIME;
   const timerBar = document.getElementById('timer-bar');
 
-  timer = setInterval(() => {
-    timeLeft--;
-    document.getElementById('timer-display').innerText = `Time Left: ${timeLeft}s`;
+  // Update display immediately
+  document.getElementById('timer-display').innerText = `Time Left: ${timeLeft}s`;
+  if (timerBar) {
+    timerBar.style.width = `100%`;
+  }
 
-    if (timerBar) {
-      timerBar.style.width = `${(timeLeft / 10) * 100}%`;
+  let tick = ACTUAL_TIME;
+
+  timer = setInterval(() => {
+    tick--;
+
+    // Update visible countdown and progress bar only for the first 10 seconds
+    if (tick <= DISPLAY_TIME) {
+      timeLeft = tick;
+      document.getElementById('timer-display').innerText = `Time Left: ${timeLeft}s`;
+      if (timerBar) {
+        timerBar.style.width = `${(timeLeft / DISPLAY_TIME) * 100}%`;
+      }
     }
 
-    if (timeLeft <= 0) {
+    // When timer hits 0, trigger the end
+    if (tick <= 0) {
       clearInterval(timer);
       alert("Time's up!");
       selectAnswer(""); // Automatically select no answer
