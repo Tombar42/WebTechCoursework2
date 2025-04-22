@@ -136,14 +136,16 @@ function showQuestion(question) {
     audioPlayer.removeAttribute('src');
   }
 
-  // Show answer options (moved outside the if/else block)
-  question.options.forEach(option => {
-    const button = document.createElement('button');
-    button.innerText = option;
-    button.classList.add('btn');
-    button.addEventListener('click', () => selectAnswer(option));
-    answersElement.appendChild(button);
-  });
+const shuffledOptions = shuffleArray(question.options);
+
+shuffledOptions.forEach(option => {
+  const button = document.createElement('button');
+  button.innerText = option;
+  button.classList.add('btn');
+  button.addEventListener('click', () => selectAnswer(option));
+  answersElement.appendChild(button);
+});
+
 }
 
 
@@ -291,6 +293,15 @@ function resetScores() {
     localStorage.removeItem('scores');
     displayScoresOnMainPage(); // refresh list
   }
+}
+
+function shuffleArray(array) {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
 }
 
 function showPopup(message) {
