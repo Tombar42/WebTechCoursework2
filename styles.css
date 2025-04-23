@@ -164,3 +164,7 @@ h2 {
   background: #4caf50;
   transition: width 1s linear;
 }
+
+#score-list {
+  list-style: none;
+}
