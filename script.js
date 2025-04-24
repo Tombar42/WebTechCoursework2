@@ -120,7 +120,7 @@ function showQuestion(question) {
     audioPlayer.style.display = 'block';
     audioPlayer.currentTime = 0;
     audioPlayer.play();
-    audioPlayer.volume = 0.5;
+    audioPlayer.volume = 0.3;
 
     // Set the timeout for the current question
     currentTimeout = setTimeout(() => {
