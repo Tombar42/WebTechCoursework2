@@ -117,16 +117,16 @@ function showQuestion(question) {
 
   if (question.src) {
     audioPlayer.src = question.src;
-    audioPlayer.style.display = 'block';
-    audioPlayer.currentTime = 0;
+    audioPlayer.style.display = 'block'; //Pauses before showing audio player
+    audioPlayer.currentTime = 0; // resets for question
     audioPlayer.play();
     audioPlayer.volume = 0.15; //Volume of the song 30%
 
     // Set the timeout for the current question
     currentTimeout = setTimeout(() => {
-      audioPlayer.pause();
+      audioPlayer.pause(); // stops the music on timeout
       audioPlayer.currentTime = 0;
-      audioPlayer.removeAttribute('src');
+      audioPlayer.removeAttribute('src'); //removes the player
       audioPlayer.style.display = 'none';
       audioPlayer.disabled = true;
     }, 10500); // 10.5 seconds to ensure it stops after 10 seconds of playback
