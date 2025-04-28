@@ -198,27 +198,29 @@ function showResults() {
   displayScores();
 }
 
-// Save score to local storage
+// This saves the users score to localStorage
 function saveScore(name, score) {
   const scores = JSON.parse(localStorage.getItem('scores')) || [];
 
   const existing = scores.find(entry => entry.name === name);
 
   if (existing) {
+    // If user already exists update the score if new score is higher
     if (score > existing.score) {
       existing.score = score;
       showPopup("🎉 New High Score!");
     }
-    // Otherwise, do nothing
+    // Do nothing if it is lower
   } else {
+    // If new player add to leaderboard
     scores.push({ name, score });
     showPopup("🎉 Welcome to the leaderboard!");
   }
-
+// Save new score in localStorage
   localStorage.setItem('scores', JSON.stringify(scores));
 }
 
-// Display scores in the leaderboard
+// Displays top 5 at end of quiz
 function displayScores() {
   const scoreList = document.getElementById('score-list');
   scoreList.innerHTML = '';
@@ -235,7 +237,7 @@ function displayScores() {
     });
 }
 
-// Display scores on the main page
+// Display scores on main page
 function displayScoresOnMainPage() {
   const scoreList = document.getElementById('score-list');
   scoreList.innerHTML = '';
@@ -253,17 +255,18 @@ function displayScoresOnMainPage() {
 }
 
 // Timer functions
+// Start a 10second timer for question
 function startTimer() {
   timeLeft = 10;
   const timerBar = document.getElementById('timer-bar');
   const timerDisplay = document.getElementById('timer-display');
 
-  // Initial display
+  // Set width and text
   timerDisplay.innerText = `Time Left: ${timeLeft}s`;
   if (timerBar) {
     timerBar.style.width = '100%';
   }
-
+// countdown every second
   timer = setInterval(() => {
     timeLeft--;
 
@@ -276,54 +279,59 @@ function startTimer() {
 
     if (timeLeft < 0) {
       clearInterval(timer);
-      // Let 0 stay on screen for 1 second, THEN call selectAnswer
+      // Once 0 wait 1 sec then select no answer
+      // This was added because otherwise it would skip the question when it reached 1 second
       setTimeout(() => {
         alert("Time's up!");
-        selectAnswer("");
+        selectAnswer(""); // No answer selected will count as wrong answer
       }, 1000);
     }
   }, 1000);
 }
 
-
+// Share score using API or clipboard
 function shareScore() {
   const shareText = `I scored ${score}/${questions.length} on the Music Quiz! 🎶 Try it yourself: ${window.location.href}`;
 
   if (navigator.share) {
+    // Use Web share API usually on mobile browser
     navigator.share({
       title: "Music Quiz",
       text: shareText,
       url: window.location.href
     }).catch(console.error);
   } else {
+    // Copy score to clipboard if no Web share API
     navigator.clipboard.writeText(shareText)
       .then(() => alert("📋 Copied to clipboard! Ready to paste anywhere 🎉"))
       .catch(() => alert("Couldn't copy. Try manually sharing."));
   }
 }
-
+// Clears scores saved in localStorage
 function resetScores() {
   if (confirm("Are you sure you want to clear the leaderboard?")) {
     localStorage.removeItem('scores');
     displayScoresOnMainPage(); // refresh list
   }
 }
-
+// Shuffles the anwers for each question random
 function shuffleArray(array) {
-  const copy = [...array];
+  const copy = [...array]; // Make a copy to prevent modification
   for (let i = copy.length - 1; i > 0; i--) {
+    // Pick random number from 0 to i
     const j = Math.floor(Math.random() * (i + 1));
+    // Swap element from position i with element at position j
     [copy[i], copy[j]] = [copy[j], copy[i]];
   }
-  return copy;
+  return copy; // Return the shuffled array
 }
-
+// Display pop up message on screen
 function showPopup(message) {
-  const popup = document.getElementById('popup');
-  if (!popup) return; // In case it's not on the page
-  popup.innerText = message;
-  popup.style.display = 'block';
-
+  const popup = document.getElementById('popup'); // Get pop up element
+  if (!popup) return; // Do nothing if no pop up element is found
+  popup.innerText = message; // Set text of pop up message
+  popup.style.display = 'block'; // Make the pop up visible
+// Make pop up go away after X amount time in this case 3s
   setTimeout(() => {
     popup.style.display = 'none';
   }, 3000);
@@ -341,22 +349,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const backButton = document.getElementById('back-btn');
   if (backButton) {
     backButton.addEventListener('click', () => {
-      window.location.href = 'index.html';
+      window.location.href = 'index.html'; // Redirect to homepage index.html
     });
   }
 
   // Share button
   const shareButton = document.getElementById('share-btn');
   if (shareButton) {
-    shareButton.addEventListener('click', shareScore);
+    shareButton.addEventListener('click', shareScore); // Adds the function of social sharing to the button
   }
 
-  // If on the quiz page, start the quiz
+  // Starts the quiz when on quiz page
   if (document.getElementById('question')) {
     startQuiz();
   }
 
-  // If on the main page, display scores
+  // When on the main page displays leaderboard
   if (document.getElementById('score-list') && !document.getElementById('question')) {
     displayScoresOnMainPage();
   }
