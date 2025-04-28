@@ -30,7 +30,7 @@ https://tombar42.github.io/WebTechCoursework2/
 - Jona Janssens
 - Moises Garcia Santos
 - Thomas Dunbar Johnson
-- 
+  
 ## Notes
 - Carly Gray contribution of FAQ page was added after the project was done
   
